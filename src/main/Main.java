@@ -12,6 +12,8 @@ import view.RegisterPage;
 
 public class Main extends Application{
 	
+	public static User currentUser;
+	
 	UserController user = new UserController();
 	public static Scene loginScene;
     public static Scene registerScene;

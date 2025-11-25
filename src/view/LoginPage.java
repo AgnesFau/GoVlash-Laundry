@@ -51,6 +51,7 @@ public class LoginPage {
 				showAlert("Invalid Credential");
 			}
 			else {
+				Main.currentUser = user;
 				//redirect to homepage
 			}
 		});

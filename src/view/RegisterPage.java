@@ -1,7 +1,7 @@
 package view;
 
 import java.time.LocalDate;
-
+import java.time.format.DateTimeFormatter;
 import controller.UserController;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,7 +15,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.Main;
-import model.User;
 
 public class RegisterPage {
 	Stage stage;
@@ -80,7 +79,7 @@ public class RegisterPage {
 	                passwordTxt.getText(),
 	                confirmTxt.getText(),
 	                gender,
-	                dobPck.getValue(),
+	                LocalDate.parse(dobPck.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),
 	                "Customer"
 	        );
 
@@ -98,7 +97,6 @@ public class RegisterPage {
 	    });
 
 	    loginBtn.setOnAction(e -> {
-	    	System.out.println("Go to login page");
 	        Main.goToLogin(stage);
 	    });
 	}
