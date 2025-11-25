@@ -12,14 +12,38 @@ import model.User;
 public class UserController {
 	public String addUser(String name, String email, String password, String confirmPassword, String gender, LocalDate dob, String role) {
 
+		if(name.isEmpty() || email.isEmpty() || password.isEmpty() || gender == null || dob == null){
+			return "All fields must be filled!";
+		}
 	    if (!password.equals(confirmPassword)) {
 	        return "Password and confirm password do not match!";
 	    }
-
-	    if(name.isEmpty() || email.isEmpty() || password.isEmpty() || gender == null || dob == null){
-	        return "All fields must be filled!";
+	    if(role.equals("Customer")) {
+	    	if(!email.endsWith("@email.com")){
+	    		return "Email must ends with @email.com";	    		
+	    	}
+	    	else if(LocalDate.now().getYear()-dob.getYear() <17) {
+	    		return "You must be at least 12 years old";
+	    	}
+	    } else if(role.equals("Laundry Staff") || role.equals("Admin") || role.equals("Receptionist")) { 
+	    	if (!email.endsWith("@govlash.com")) {
+	    		return "Email must ends with @goovlash.com";
+	    	}
+	    	else if(LocalDate.now().getYear()-dob.getYear() <17) {
+		    	return "You must be at least 17 years old";
+		    }
 	    }
-
+	    else {
+	    	return "Role is unknown";
+	    }
+	    
+	    if(password.length()<6) {
+	    	return "Password must be at leatst 6 characters";
+	    }
+	    if(!gender.equals("Female") && !gender.equals("Male")) {
+	    	return "Gender must be Male or Female";
+	    }
+	    
 	    User user = null;
 	    int id = User.getUserList().size() + 1;
 
