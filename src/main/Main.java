@@ -1,0 +1,46 @@
+package main;
+
+import java.sql.SQLException;
+
+import controller.UserController;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import model.User;
+import view.LoginPage;
+import view.RegisterPage;
+
+public class Main extends Application{
+	
+	UserController user = new UserController();
+	public static Scene loginScene;
+    public static Scene registerScene;
+	
+	public static void goToLogin(Stage stage) {
+        stage.setScene(loginScene);
+    }
+
+    public static void goToRegister(Stage stage) {
+        stage.setScene(registerScene);
+    }
+	
+	public static void main(String[] args) {
+		try {
+			User.loadUsersFromDB();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		launch(args);
+	}
+
+	@Override
+	public void start(Stage stage) throws Exception {
+        loginScene = LoginPage.getScene(stage);
+        registerScene = RegisterPage.getScene(stage);
+
+        stage.setScene(loginScene);
+        stage.show();
+	}
+
+}
