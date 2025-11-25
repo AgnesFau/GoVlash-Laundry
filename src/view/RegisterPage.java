@@ -1,8 +1,8 @@
 package view;
 
-import java.time.LocalDate;
-
 import controller.UserController;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,57 +12,99 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import main.Main;
-import model.User;
 
 public class RegisterPage {
 	Stage stage;
 	Scene scene;
 	
-	Label usernameLbl, emailLbl, passwordLbl, genderLbl, dobLbl, confirmLbl;
+	Label titleLbl, usernameLbl, emailLbl, passwordLbl, confirmLbl, genderLbl, dobLbl;
 	TextField usernameTxt, emailTxt;
 	PasswordField passwordTxt, confirmTxt;
 	RadioButton femaleRb, maleRb;
 	DatePicker dobPck;
 	ToggleGroup genderTg;
-	
 	Button submitBtn, loginBtn;
 	
-	VBox container;
+	GridPane formLayout;
+	VBox mainLayout;
 	
 	private Scene init() {
-		usernameLbl = new Label("Username");
-		emailLbl = new Label("Email");
-		passwordLbl = new Label("Password");
-		confirmLbl = new Label("Confirm Password");
-		genderLbl = new Label("Gender");
-		dobLbl = new Label("Date of birth");
+		titleLbl = new Label("Register New Account");
+		titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+
+		usernameLbl = new Label("Username:");
+		emailLbl = new Label("Email:");
+		passwordLbl = new Label("Password:");
+		confirmLbl = new Label("Confirm Pass:");
+		genderLbl = new Label("Gender:");
+		dobLbl = new Label("Date of Birth:");
 		
 		usernameTxt = new TextField();
 		emailTxt = new TextField();
+		emailTxt.setPromptText("ends with @email.com");
+		
 		passwordTxt = new PasswordField();
 		confirmTxt = new PasswordField();
+		
 		genderTg = new ToggleGroup();
 		maleRb = new RadioButton("Male");
 		femaleRb = new RadioButton("Female");
-		dobPck = new DatePicker();
-		
-		submitBtn = new Button("Submit");
-		loginBtn = new Button("Login here");
-		
-		container = new VBox();
-		
-		femaleRb.setToggleGroup(genderTg);
 		maleRb.setToggleGroup(genderTg);
+		femaleRb.setToggleGroup(genderTg);
 		
-		container = new VBox();
-		container.getChildren().addAll(usernameLbl, usernameTxt, passwordLbl, passwordTxt, confirmLbl, confirmTxt, emailLbl, emailTxt, genderLbl, femaleRb, maleRb, dobLbl, dobPck, submitBtn, loginBtn);
+		HBox genderBox = new HBox(15);
+		genderBox.getChildren().addAll(maleRb, femaleRb);
+
+		dobPck = new DatePicker();
+		dobPck.setPromptText("Select date");
+		
+		submitBtn = new Button("Register Now");
+		submitBtn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
+		submitBtn.setMinWidth(150);
+
+		loginBtn = new Button("Already have an account? Login");
+		loginBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: blue; -fx-underline: true;");
+
+		formLayout = new GridPane();
+		formLayout.setAlignment(Pos.CENTER);
+		formLayout.setHgap(10);
+		formLayout.setVgap(15);
+		formLayout.setPadding(new Insets(20));
+
+		formLayout.add(usernameLbl, 0, 0);
+		formLayout.add(usernameTxt, 1, 0);
+		
+		formLayout.add(emailLbl, 0, 1);
+		formLayout.add(emailTxt, 1, 1);
+		
+		formLayout.add(passwordLbl, 0, 2);
+		formLayout.add(passwordTxt, 1, 2);
+		
+		formLayout.add(confirmLbl, 0, 3);
+		formLayout.add(confirmTxt, 1, 3);
+		
+		formLayout.add(genderLbl, 0, 4);
+		formLayout.add(genderBox, 1, 4);
+		
+		formLayout.add(dobLbl, 0, 5);
+		formLayout.add(dobPck, 1, 5);
+		
+		formLayout.add(submitBtn, 1, 6);
+
+		mainLayout = new VBox(20);
+		mainLayout.setAlignment(Pos.CENTER);
+		mainLayout.getChildren().addAll(titleLbl, formLayout, loginBtn);
+		
 		addBehaviour();
 		
-		scene = new Scene(container, 1000, 800);
-		
+		scene = new Scene(mainLayout, 800, 600);
 		return scene;
 	}
 	

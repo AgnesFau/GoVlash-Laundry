@@ -1,7 +1,12 @@
 package model;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import db.DbConnect;
 
 public class Transaction {
 	private int id;
@@ -16,21 +21,18 @@ public class Transaction {
 	
 	private ArrayList<Transaction> listTransactions = new ArrayList<Transaction>();
 
-	public Transaction(int serviceId, int customerId, int receptionistId, int laundryStaffId, LocalDate date,
-			String status, Double totalWeight, String notes, ArrayList<Transaction> listTransactions) {
-		super();
-		this.id = listTransactions.size()+1;
-		this.serviceId = serviceId;
-		this.customerId = customerId;
-		this.receptionistId = receptionistId;
-		this.laundryStaffId = laundryStaffId;
-		this.date = date;
-		this.status = status;
-		this.totalWeight = totalWeight;
-		this.notes = notes;
-		this.listTransactions = listTransactions;
-		listTransactions.add(this);
-	}
+	public Transaction(int id, int serviceId, int customerId, int receptionistId, int laundryStaffId, LocalDate date,
+            String status, Double totalWeight, String notes) {
+        this.id = id;
+        this.serviceId = serviceId;
+        this.customerId = customerId;
+        this.receptionistId = receptionistId;
+        this.laundryStaffId = laundryStaffId;
+        this.date = date;
+        this.status = status;
+        this.totalWeight = totalWeight;
+        this.notes = notes;
+    }
 	
 	public ArrayList<Transaction> getTransactionByStatus(String status){
 		ArrayList<Transaction> listByStatus = new ArrayList<Transaction>();
@@ -43,7 +45,39 @@ public class Transaction {
 		
 		return listByStatus;
 	}
-
+	
+	public static ArrayList<Transaction> getTransactionByCustomerId(int customerId) {
+        ArrayList<Transaction> trList = new ArrayList<Transaction>();
+        String query = "SELECT * FROM transactions WHERE customer_id = ? ORDER BY date DESC";
+        
+        try {
+            PreparedStatement ps = DbConnect.getInstance().prepareStatement(query);
+            ps.setInt(1, customerId);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                int id = rs.getInt("id");
+                int serviceId = rs.getInt("service_id");
+                int custId = rs.getInt("customer_id");
+                int recepId = rs.getInt("receptionist_id");
+                int staffId = rs.getInt("laundry_staff_id");
+                java.sql.Date sqlDate = rs.getDate("date");
+                LocalDate date = (sqlDate != null) ? sqlDate.toLocalDate() : null;
+                String status = rs.getString("status");
+                Double totalWeight = rs.getDouble("total_weight");
+                String notes = rs.getString("notes");
+                
+                Transaction tr = new Transaction(id, serviceId, custId, recepId, staffId, date, status, totalWeight, notes);
+                trList.add(tr);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return trList;
+    }
+	
 	public int getId() {
 		return id;
 	}
