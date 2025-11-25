@@ -109,52 +109,50 @@ public class RegisterPage {
 	}
 	
 	private void addBehaviour() {
-	    submitBtn.setOnAction(e -> {
+		submitBtn.setOnAction(e -> {
 
-	        RadioButton selectedGender = (RadioButton) genderTg.getSelectedToggle();
-	        String gender = selectedGender == null ? null : selectedGender.getText();
+			RadioButton selectedGender = (RadioButton) genderTg.getSelectedToggle();
+			String gender = selectedGender == null ? null : selectedGender.getText();
 
-	        UserController controller = new UserController();
+			UserController controller = new UserController();
 
-	        String error = controller.addUser(
-	                usernameTxt.getText(),
-	                emailTxt.getText(),
-	                passwordTxt.getText(),
-	                confirmTxt.getText(),
-	                gender,
-	                dobPck.getValue(),
-	                "Customer"
-	        );
+			String error = controller.addUser(
+					usernameTxt.getText(),
+					emailTxt.getText(),
+					passwordTxt.getText(),
+					confirmTxt.getText(),
+					gender,
+					dobPck.getValue(),
+					"Customer"
+			);
 
-	        if (error != null) {
-	            showAlert(error); 
-	        }
-	        else {
-	            Alert success = new Alert(Alert.AlertType.INFORMATION);
-	            success.setTitle("Success");
-	            success.setContentText("Registration successful! Please login.");
-	            success.showAndWait();
+			if (error != null) {
+				showAlert(error); 
+			}
+			else {
+				Alert success = new Alert(Alert.AlertType.INFORMATION);
+				success.setTitle("Success");
+				success.setContentText("Registration successful! Please login.");
+				success.showAndWait();
 
-	            return;
-	        }
-	    });
+				Main.goToLogin(stage);
+			}
+		});
 
-	    loginBtn.setOnAction(e -> {
-	    	System.out.println("Go to login page");
-	        Main.goToLogin(stage);
-	    });
+		loginBtn.setOnAction(e -> {
+			Main.goToLogin(stage);
+		});
 	}
 	
 	public static Scene getScene(Stage stage) {
-	    return new RegisterPage(stage).init();
+		return new RegisterPage(stage).init();
 	}
 
-	
 	private void showAlert(String message) {
-	    Alert alert = new Alert(Alert.AlertType.ERROR);
-	    alert.setTitle("Error");
-	    alert.setContentText(message);
-	    alert.show();
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setContentText(message);
+		alert.show();
 	}
 	
 	public RegisterPage(Stage stage) {

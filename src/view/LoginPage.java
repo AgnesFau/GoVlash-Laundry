@@ -80,28 +80,32 @@ public class LoginPage {
 			if(user == null) {
 				showAlert("Invalid Credential");
 			}
-			else if(user.getRole().equals("Customer")) {
-			    CustomerHomePage homePage = new CustomerHomePage(stage, user);
-			    stage.setScene(homePage.init());
+			else {
+				Main.currentUser = user; 
+				
+				if(user.getRole().equals("Customer")) {
+					CustomerHomePage homePage = new CustomerHomePage(stage, user);
+					stage.setScene(homePage.init());
+				}
 			}
 		});
+		
 		registerBtn.setOnAction(e -> {
 			Main.goToRegister(stage);
 		});
 	}
 	
 	private void showAlert(String message) {
-	    Alert alert = new Alert(Alert.AlertType.ERROR);
-	    alert.setTitle("Error");
-	    alert.setContentText(message);
-	    alert.show();
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setContentText(message);
+		alert.show();
 	}
 	
 	public static Scene getScene(Stage stage) {
-	    return new LoginPage(stage).init();
+		return new LoginPage(stage).init();
 	}
 
-	
 	public LoginPage(Stage stage) {
 		this.stage = stage;
 		userController = new UserController();

@@ -10,19 +10,21 @@ import model.User;
 import view.LoginPage;
 import view.RegisterPage;
 
-public class Main extends Application{
+public class Main extends Application {
+	
+	public static User currentUser;
 	
 	UserController user = new UserController();
 	public static Scene loginScene;
-    public static Scene registerScene;
+	public static Scene registerScene;
 	
 	public static void goToLogin(Stage stage) {
-        stage.setScene(loginScene);
-    }
+		stage.setScene(loginScene);
+	}
 
-    public static void goToRegister(Stage stage) {
-        stage.setScene(registerScene);
-    }
+	public static void goToRegister(Stage stage) {
+		stage.setScene(registerScene);
+	}
 	
 	public static void main(String[] args) {
 		try {
@@ -36,11 +38,10 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-        loginScene = LoginPage.getScene(stage);
-        registerScene = RegisterPage.getScene(stage);
+		loginScene = LoginPage.getScene(stage);
+		registerScene = RegisterPage.getScene(stage);
 
-        stage.setScene(loginScene);
-        stage.show();
+		stage.setScene(loginScene);
+		stage.show();
 	}
-
 }
