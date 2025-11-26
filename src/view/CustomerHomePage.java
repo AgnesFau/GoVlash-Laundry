@@ -13,7 +13,7 @@ public class CustomerHomePage {
     Scene scene;
     User currentUser;
     Label welcomeLbl;
-    Button orderBtn, historyBtn, logoutBtn;
+    Button orderBtn, historyBtn, logoutBtn, notifBtn;
     VBox container;
 
     public CustomerHomePage(Stage stage, User currentUser) {
@@ -27,12 +27,14 @@ public class CustomerHomePage {
         orderBtn = new Button("Order Laundry Service");
         historyBtn = new Button("View Transaction History");
         logoutBtn = new Button("Logout");
+        notifBtn = new Button("Notifications");
+        notifBtn.setMinWidth(200);
         orderBtn.setMinWidth(200);
         historyBtn.setMinWidth(200);
         logoutBtn.setMinWidth(200);
         container = new VBox(20);
         container.setAlignment(Pos.CENTER); 
-        container.getChildren().addAll(welcomeLbl, orderBtn, historyBtn, logoutBtn);
+        container.getChildren().addAll(welcomeLbl, orderBtn, historyBtn, notifBtn, logoutBtn);
         addActions();
 
         scene = new Scene(container, 800, 600);
@@ -51,6 +53,10 @@ public class CustomerHomePage {
         logoutBtn.setOnAction(e -> {
             LoginPage loginPage = new LoginPage(stage);
             stage.setScene(loginPage.getScene(stage)); 
+        });
+        notifBtn.setOnAction(e -> {
+            NotificationPage notifPage = new NotificationPage(stage, currentUser);
+            stage.setScene(notifPage.init());
         });
     }
 }
