@@ -121,6 +121,30 @@ public class Transaction {
         return trList;
     }
 	
+	public static String assignStaffToTransaction(int transactionId, int staffId) {
+	    String query = "UPDATE transactions SET laundry_staff_id = ?, status = 'On Progress' WHERE id = ?";
+
+	    try {
+	        PreparedStatement ps = DbConnect.getInstance().prepareStatement(query);
+
+	        ps.setInt(1, staffId);
+	        ps.setInt(2, transactionId);
+
+	        int rows = ps.executeUpdate();
+
+	        if (rows > 0) {
+	            return "Staff assigned successfully!";
+	        } else {
+	            return "Failed to assign staff (no rows updated).";
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return "Database error: " + e.getMessage();
+	    }
+	}
+
+	
 	public int getId() {
 		return id;
 	}

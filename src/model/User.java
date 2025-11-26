@@ -40,7 +40,7 @@ public abstract class User {
 		return null;
 	}
 	
-	public ArrayList<User> getUserByRole(String role){
+	public static ArrayList<User> getUserByRole(String role){
 		ArrayList<User> userByRole = new ArrayList<User>();
 		for (User user : userList) {
 			if(user.role.equals(role)) {

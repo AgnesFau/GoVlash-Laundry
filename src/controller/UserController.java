@@ -2,6 +2,7 @@ package controller;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import model.Admin;
 import model.Customer;
@@ -78,5 +79,13 @@ public class UserController {
 		}
 		
 		return User.login(email, password);
+	}
+	
+	public ArrayList<User> getUserByRole(String role){
+		if(!role.equals("Customer") && !role.equals("Laundry Staff") && !role.equals("Admin") && !role.equals("Receptionist")) {
+			return null;
+		}
+		
+		return User.getUserByRole(role);
 	}
 }
