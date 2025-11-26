@@ -46,6 +46,19 @@ public class Transaction {
 		return listByStatus;
 	}
 	
+	public static void createTransaction(int serviceId, int customerId, double weight, String notes) throws SQLException {
+		
+		String q = "INSERT INTO transactions (service_id, customer_id, date, status, total_weight, notes) VALUES (?, ?, ?, ?, ?, ?)";
+		PreparedStatement ps = DbConnect.getInstance().prepareStatement(q);
+        ps.setInt(1, serviceId);
+        ps.setInt(2, customerId);
+        ps.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+        ps.setString(4, "Pending");
+        ps.setDouble(5, weight);
+        ps.setString(6, notes);
+        
+        ps.executeUpdate();
+	}
 	public static ArrayList<Transaction> getTransactionByCustomerId(int customerId) {
         ArrayList<Transaction> trList = new ArrayList<Transaction>();
         String query = "SELECT * FROM transactions WHERE customer_id = ? ORDER BY date DESC";
