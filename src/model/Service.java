@@ -55,6 +55,25 @@ public class Service {
 	    return s; 
 	}
 
+	public static void updateService(int id, String name, String desc, Double price, Integer duration) throws SQLException {
+	    String sql = "UPDATE services SET name=?, description=?, price=?, duration=? WHERE id=?";
+	    
+	    PreparedStatement stmt = DbConnect.getInstance().prepareStatement(sql);
+	    stmt.setString(1, name);
+	    stmt.setString(2, desc);
+	    stmt.setDouble(3, price);
+	    stmt.setInt(4, duration);
+	    stmt.setInt(5, id);
+	    stmt.executeUpdate();
+	}
+	
+	public static void deleteService(int id) throws SQLException {
+	    String sql = "DELETE FROM services WHERE id=?";
+	    
+	    PreparedStatement stmt = DbConnect.getInstance().prepareStatement(sql);
+	    stmt.setInt(1, id);
+	    stmt.executeUpdate();
+	}
 	
 	public static void loadServicesFromDB() throws SQLException {
 	    String sql = "SELECT * FROM services";

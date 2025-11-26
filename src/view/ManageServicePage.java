@@ -2,29 +2,25 @@ package view;
 
 import component.ServiceTableComponent;
 import controller.ServiceController;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.Main;
 import model.Service;
-import model.User;
 
 public class ManageServicePage {
 	Stage stage;
 	Scene scene;
 	
 	ServiceController controller = new ServiceController();
-    
 	TableView<Service> serviceTable;
     
     Label nameLbl, descLbl, priceLbl, durationLbl;
@@ -34,20 +30,8 @@ public class ManageServicePage {
     VBox container;
 	
 	private Scene init() {
-		TableColumn<Service, Number> idColumn = new TableColumn<>("Id");
-		idColumn.setCellValueFactory(data -> data.getValue().getId());
-		TableColumn<Service, String> nameColumn = new TableColumn<>("Name");
-		nameColumn.setCellValueFactory(data -> data.getValue().getName());
-		TableColumn<Service, String> descColumn = new TableColumn<>("Description");
-		descColumn.setCellValueFactory(data -> data.getValue().getDescription());
-		TableColumn<Service, Number> priceColumn = new TableColumn<>("Price");
-		priceColumn.setCellValueFactory(data -> data.getValue().getPrice());
-		TableColumn<Service, Number> durationColumn = new TableColumn<>("Duration");
-		durationColumn.setCellValueFactory(data -> data.getValue().getDuration());
 		
 		serviceTable = ServiceTableComponent.create();
-//		serviceTable.getColumns().addAll(idColumn, nameColumn, descColumn, priceColumn, durationColumn);
-//		serviceTable.setItems(Service.getListService());
 		
 		nameLbl = new Label("Service Name");
 		descLbl = new Label("Description");		
@@ -60,6 +44,43 @@ public class ManageServicePage {
 		durationTxt = new TextField();
 		
 		addBtn = new Button("Add New Service");
+		
+		TableColumn<Service, Void> actionColumn = new TableColumn<>("Action");
+
+		actionColumn.setCellFactory(col -> new TableCell<Service, Void>() {
+
+		    private final Button updateBtn = new Button("Update");
+		    private final Button deleteBtn = new Button("Delete");
+
+		    {
+		        updateBtn.setOnAction(e -> {
+		            Service s = getTableView().getItems().get(getIndex());
+		            System.out.println(s.getId().get() + "update");
+		            controller.updateService(s);
+		        });
+
+		        deleteBtn.setOnAction(e -> {
+		            Service s = getTableView().getItems().get(getIndex());
+		            controller.deleteService(s);
+		            
+		            Service.getListService().remove(s);
+		        });
+		    }
+
+		    @Override
+		    protected void updateItem(Void item, boolean empty) {
+		        super.updateItem(item, empty);
+
+		        if (empty) {
+		            setGraphic(null);
+		        } else {
+		            HBox box = new HBox(10, updateBtn, deleteBtn);
+		            setGraphic(box);
+		        }
+		    }
+		});
+
+		serviceTable.getColumns().add(actionColumn);
 		
 		container = new VBox();
 		container.getChildren().addAll(nameLbl, nameTxt, descLbl, descTxt, priceLbl, priceTxt, durationLbl, durationTxt, addBtn, serviceTable);

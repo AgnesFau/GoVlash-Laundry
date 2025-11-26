@@ -30,4 +30,27 @@ public class ServiceController {
 	        return "Database error occurred!";
 	    }
 	}
+	
+	public String updateService(Service service) {
+	    try {
+	        Service.updateService(service.getId().get(),
+	        		service.getName().get(),
+	        		service.getDescription().get(), 
+	        		service.getPrice().get(),
+	        		service.getDuration().get());
+	        return null;
+	    } catch (Exception e) {
+	        return e.getMessage();
+	    }
+	}
+
+	public String deleteService(Service service) {
+	    try {
+	        Service.deleteService(service.getId().get());
+            Service.getListService().remove(service);
+	        return null;
+	    } catch (Exception e) {
+	        return e.getMessage();
+	    }
+	}
 }
