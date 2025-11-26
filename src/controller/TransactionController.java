@@ -34,4 +34,8 @@ public class TransactionController {
             return "Database Error: " + e.getMessage();
         }
     }
+	
+	public ArrayList<Transaction> getAllTransactions() {
+        return Transaction.getAllTransactions();
+    }
 }

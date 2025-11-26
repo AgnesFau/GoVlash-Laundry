@@ -12,6 +12,7 @@ import view.LoginPage;
 import view.ManageEmployeePage;
 import view.ManageServicePage;
 import view.RegisterPage;
+import view.ViewTransactionPage;
 
 public class Main extends Application {
 	
@@ -22,7 +23,8 @@ public class Main extends Application {
 	public static Scene registerScene;
     public static Scene manageServiceScene;
     public static Scene manageEmployeeScene;
-	
+    public static Scene viewTransactionScene; 
+    
 	public static void goToLogin(Stage stage) {
 		stage.setScene(loginScene);
 	}
@@ -36,6 +38,9 @@ public class Main extends Application {
     
     public static void goToManageEmployee(Stage stage) {
         stage.setScene(manageEmployeeScene);
+    }
+    public static void goToViewTransactions(Stage stage) {
+        stage.setScene(ViewTransactionPage.getScene(stage));
     }
 	public static void main(String[] args) {
 		try {
@@ -54,6 +59,7 @@ public class Main extends Application {
 		registerScene = RegisterPage.getScene(stage);
         manageServiceScene = ManageServicePage.getScene(stage);
         manageEmployeeScene = ManageEmployeePage.getScene(stage);
+        viewTransactionScene = ViewTransactionPage.getScene(stage); 
 		stage.setScene(loginScene);
 		stage.show();
 	}

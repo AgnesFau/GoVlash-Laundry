@@ -32,7 +32,7 @@ public class ManageServicePage {
     
     Label titleLbl, nameLbl, descLbl, priceLbl, durationLbl;
     TextField nameTxt, descTxt, priceTxt, durationTxt;
-    Button addBtn, editBtn, employeePageBtn, logoutBtn;
+    Button addBtn, editBtn, employeePageBtn, logoutBtn, transactionPageBtn;
     
     VBox mainLayout;
     GridPane formLayout;
@@ -61,8 +61,9 @@ public class ManageServicePage {
         editBtn = new Button("Save Changes");
         editBtn.setStyle("-fx-background-color: #FF9800; -fx-text-fill: white;");
         editBtn.setVisible(false); 
-        employeePageBtn = new Button("Go to Manage Employees");
-        employeePageBtn.setMinWidth(180);
+        
+        employeePageBtn = new Button("Manage Employees");
+        transactionPageBtn = new Button("View Transactions"); 
         
         logoutBtn = new Button("Logout");
         logoutBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
@@ -84,13 +85,14 @@ public class ManageServicePage {
         formLayout.add(buttonBox, 1, 2);
 
         serviceTable = ServiceTableComponent.create();
+        setupActionColumn();
         serviceTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         mainLayout = new VBox(20);
         mainLayout.setPadding(new Insets(20));
         mainLayout.setAlignment(Pos.TOP_CENTER);
         
-        HBox navBox = new HBox(15, employeePageBtn, logoutBtn);
+        HBox navBox = new HBox(15, employeePageBtn, transactionPageBtn, logoutBtn);
         navBox.setAlignment(Pos.CENTER_RIGHT);
         
         VBox.setVgrow(serviceTable, Priority.ALWAYS);
@@ -111,16 +113,30 @@ public class ManageServicePage {
             private final Button deleteBtn = new Button("Delete");
 
             {
+            	updateBtn.setStyle("-fx-background-color: #FFC107; -fx-text-fill: black;");
+                deleteBtn.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
+
                 updateBtn.setOnAction(e -> {
                     Service s = getTableView().getItems().get(getIndex());
                     onUpdate(s); 
                 });
-
                 deleteBtn.setOnAction(e -> {
                     Service s = getTableView().getItems().get(getIndex());
-                    controller.deleteService(s);
+                    Alert confirm = new Alert(AlertType.CONFIRMATION);
+                    confirm.setTitle("Delete Service");
+                    confirm.setContentText("Are you sure you want to delete " + s.getName().get() + "?");
+                    confirm.showAndWait().ifPresent(response -> {
+                        if (response == javafx.scene.control.ButtonType.OK) {
+                            String error = controller.deleteService(s);
+                            
+                            if (error != null) {
+                                showAlert(error, AlertType.ERROR);
+                            } else {
+                                showAlert("Deleted successfully!", AlertType.INFORMATION);
+                            }
+                        }
+                    });
                 });
-                deleteBtn.setStyle("-fx-text-fill: red;");
             }
 
             @Override
@@ -200,6 +216,7 @@ public class ManageServicePage {
             }
         });
         employeePageBtn.setOnAction(e -> Main.goToManageEmployee(stage));
+        transactionPageBtn.setOnAction(e -> Main.goToViewTransactions(stage));
         logoutBtn.setOnAction(e -> Main.goToLogin(stage));
     }
     
