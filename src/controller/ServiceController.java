@@ -1,6 +1,10 @@
 package controller;
 
 import java.sql.SQLException;
+
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import model.Service;
 
 public class ServiceController {
@@ -28,6 +32,30 @@ public class ServiceController {
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	        return "Database error occurred!";
+	    }
+	}
+	
+	public String updateService(int id, String name, String description, double price, int duration, Service service) {
+	    try {
+	        Service.updateService(id, name, description, price, duration);
+
+	        service.setName(name);
+	        service.setDescription(description);
+	        service.setPrice(price);
+	        service.setDuration(duration);
+	        return null;
+	    } catch (Exception e) {
+	        return e.getMessage();
+	    }
+	}
+
+	public String deleteService(Service service) {
+	    try {
+	        Service.deleteService(service.getId().get());
+            Service.getListService().remove(service);
+	        return null;
+	    } catch (Exception e) {
+	        return e.getMessage();
 	    }
 	}
 }
