@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import controller.UserController;
 import db.DbConnect;
 
 public abstract class User {

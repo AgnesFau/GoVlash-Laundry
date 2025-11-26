@@ -88,7 +88,7 @@ public class ManageServicePage {
 		container.getChildren().addAll(nameLbl, nameTxt, descLbl, descTxt, priceLbl, priceTxt, durationLbl, durationTxt, addBtn, editBtn, serviceTable);
 		
 		adddBehaviour();
-		scene = new Scene(container, 1000, 800);
+		scene = new Scene(container, 1000, 500);
 		
 		return scene;
 	}

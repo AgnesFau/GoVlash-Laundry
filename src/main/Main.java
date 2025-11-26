@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import model.Service;
 import model.User;
 import view.LoginPage;
+import view.ManageEmployeePage;
 import view.ManageServicePage;
 import view.RegisterPage;
 
@@ -20,6 +21,7 @@ public class Main extends Application{
 	public static Scene loginScene;
     public static Scene registerScene;
     public static Scene manageServiceScene;
+    public static Scene manageEmployeeScene;
 	
 	public static void goToLogin(Stage stage) {
         stage.setScene(loginScene);
@@ -49,8 +51,9 @@ public class Main extends Application{
         loginScene = LoginPage.getScene(stage);
         registerScene = RegisterPage.getScene(stage);
         manageServiceScene = ManageServicePage.getScene(stage);
+        manageEmployeeScene = ManageEmployeePage.getScene(stage);
 
-        stage.setScene(manageServiceScene);
+        stage.setScene(manageEmployeeScene);
         stage.show();
 	}
 
