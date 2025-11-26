@@ -10,6 +10,7 @@ import model.Service;
 import model.User;
 import view.LoginPage;
 import view.ManageEmployeePage;
+import view.ManagePendingTransaction;
 import view.ManageServicePage;
 import view.RegisterPage;
 import view.ViewTransactionPage;
@@ -24,6 +25,7 @@ public class Main extends Application {
     public static Scene manageServiceScene;
     public static Scene manageEmployeeScene;
     public static Scene viewTransactionScene; 
+    public static Scene managePendingTransaction;
     
 	public static void goToLogin(Stage stage) {
 		stage.setScene(loginScene);
@@ -60,6 +62,8 @@ public class Main extends Application {
         manageServiceScene = ManageServicePage.getScene(stage);
         manageEmployeeScene = ManageEmployeePage.getScene(stage);
         viewTransactionScene = ViewTransactionPage.getScene(stage); 
+        managePendingTransaction = ManagePendingTransaction.getScene(stage);
+        
 		stage.setScene(loginScene);
 		stage.show();
 	}

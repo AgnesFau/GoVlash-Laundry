@@ -38,4 +38,8 @@ public class TransactionController {
 	public ArrayList<Transaction> getAllTransactions() {
         return Transaction.getAllTransactions();
     }
+	
+	public String assignStaffToTransaction(int transactionId, int staffId) {
+        return Transaction.assignStaffToTransaction(transactionId, staffId);
+    }
 }
