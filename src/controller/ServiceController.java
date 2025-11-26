@@ -1,6 +1,10 @@
 package controller;
 
 import java.sql.SQLException;
+
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import model.Service;
 
 public class ServiceController {
@@ -31,13 +35,14 @@ public class ServiceController {
 	    }
 	}
 	
-	public String updateService(Service service) {
+	public String updateService(int id, String name, String description, double price, int duration, Service service) {
 	    try {
-	        Service.updateService(service.getId().get(),
-	        		service.getName().get(),
-	        		service.getDescription().get(), 
-	        		service.getPrice().get(),
-	        		service.getDuration().get());
+	        Service.updateService(id, name, description, price, duration);
+
+	        service.setName(name);
+	        service.setDescription(description);
+	        service.setPrice(price);
+	        service.setDuration(duration);
 	        return null;
 	    } catch (Exception e) {
 	        return e.getMessage();

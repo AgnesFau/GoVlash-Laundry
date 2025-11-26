@@ -2,6 +2,9 @@ package view;
 
 import component.ServiceTableComponent;
 import controller.ServiceController;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -25,7 +28,7 @@ public class ManageServicePage {
     
     Label nameLbl, descLbl, priceLbl, durationLbl;
     TextField nameTxt, descTxt, priceTxt, durationTxt;
-    Button addBtn;
+    Button addBtn, editBtn;
     
     VBox container;
 	
@@ -44,6 +47,8 @@ public class ManageServicePage {
 		durationTxt = new TextField();
 		
 		addBtn = new Button("Add New Service");
+		editBtn = new Button("Save Changes");
+		editBtn.setVisible(false);
 		
 		TableColumn<Service, Void> actionColumn = new TableColumn<>("Action");
 
@@ -55,15 +60,12 @@ public class ManageServicePage {
 		    {
 		        updateBtn.setOnAction(e -> {
 		            Service s = getTableView().getItems().get(getIndex());
-		            System.out.println(s.getId().get() + "update");
-		            controller.updateService(s);
+		            onUpdate(s);
 		        });
 
 		        deleteBtn.setOnAction(e -> {
 		            Service s = getTableView().getItems().get(getIndex());
 		            controller.deleteService(s);
-		            
-		            Service.getListService().remove(s);
 		        });
 		    }
 
@@ -83,12 +85,41 @@ public class ManageServicePage {
 		serviceTable.getColumns().add(actionColumn);
 		
 		container = new VBox();
-		container.getChildren().addAll(nameLbl, nameTxt, descLbl, descTxt, priceLbl, priceTxt, durationLbl, durationTxt, addBtn, serviceTable);
+		container.getChildren().addAll(nameLbl, nameTxt, descLbl, descTxt, priceLbl, priceTxt, durationLbl, durationTxt, addBtn, editBtn, serviceTable);
 		
 		adddBehaviour();
 		scene = new Scene(container, 1000, 800);
 		
 		return scene;
+	}
+	
+	private void onUpdate(Service service) {
+		System.out.println("asjdnlasdna");
+	    nameTxt.setText(service.getName().get());
+	    descTxt.setText(service.getDescription().get());
+	    priceTxt.setText(String.valueOf(service.getPrice().get()));
+	    durationTxt.setText(String.valueOf(service.getDuration().get()));
+
+	    addBtn.setVisible(false);
+	    editBtn.setVisible(true);
+
+	    editBtn.setOnAction(e -> {
+	        try {
+	            controller.updateService(service.getId().get(), 
+		    			nameTxt.getText(), 
+		    			descTxt.getText(), 
+		    			Double.parseDouble(priceTxt.getText()), 
+		    			Integer.parseInt(durationTxt.getText()),
+		    			service);
+	            showAlert("Updated successfully!", AlertType.INFORMATION);
+	            
+	            addBtn.setVisible(true);
+	            editBtn.setVisible(false);
+	        } catch (Exception ex) {
+	            showAlert(ex.getMessage(), AlertType.ERROR);
+	        }
+	        serviceTable.refresh();
+	    });
 	}
 	
 	private void adddBehaviour() {
