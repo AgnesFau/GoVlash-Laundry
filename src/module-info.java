@@ -6,8 +6,10 @@
  */
 module Group8 {
 	opens main;
-	
-	requires javafx.graphics;
-	requires javafx.controls;
-	requires java.sql;
+    opens model;
+    
+    requires javafx.graphics;
+    requires javafx.controls;
+    requires java.sql;
+    requires javafx.base;
 }

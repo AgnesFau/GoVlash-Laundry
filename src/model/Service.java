@@ -139,4 +139,8 @@ public class Service {
 	public static void setListService(ObservableList<Service> listService) {
 		Service.listService = listService;
 	}
+	@Override
+    public String toString() {
+        return name.get();
+    }
 }

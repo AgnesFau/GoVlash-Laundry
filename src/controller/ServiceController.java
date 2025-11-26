@@ -46,12 +46,16 @@ public class ServiceController {
 	}
 
 	public String deleteService(Service service) {
-	    try {
-	        Service.deleteService(service.getId().get());
+        try {
+            Service.deleteService(service.getId().get());
             Service.getListService().remove(service);
-	        return null;
-	    } catch (Exception e) {
-	        return e.getMessage();
-	    }
-	}
+            
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Cannot delete service! It might be used in a transaction.";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
 }

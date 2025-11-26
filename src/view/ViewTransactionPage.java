@@ -1,0 +1,110 @@
+package view;
+
+import java.util.ArrayList;
+
+import controller.TransactionController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
+import main.Main;
+import model.Transaction;
+
+public class ViewTransactionPage {
+    Stage stage;
+    TransactionController trController = new TransactionController();
+    
+    Label titleLbl;
+    TableView<Transaction> table;
+    ToggleButton filterBtn; 
+    Button backBtn;
+    VBox mainLayout;
+    ObservableList<Transaction> masterData;
+    FilteredList<Transaction> filteredData;
+
+    public ViewTransactionPage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Scene init() {
+        titleLbl = new Label("All Transactions");
+        titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        filterBtn = new ToggleButton("Show Finished Only");
+        filterBtn.setStyle("-fx-base: #FF9800; -fx-text-fill: white;");
+        
+        table = new TableView<>();
+        setupTableColumns();
+        loadData(); 
+        VBox.setVgrow(table, Priority.ALWAYS);
+        backBtn = new Button("Back to Dashboard");
+        backBtn.setOnAction(e -> Main.goToManageService(stage));
+        HBox topBar = new HBox(10, titleLbl, filterBtn);
+        topBar.setAlignment(Pos.CENTER_LEFT);
+        
+        mainLayout = new VBox(15);
+        mainLayout.setPadding(new Insets(20));
+        mainLayout.getChildren().addAll(topBar, table, backBtn);
+        addFilterBehaviour();
+
+        return new Scene(mainLayout, 1000, 600);
+    }
+
+    private void setupTableColumns() {
+        TableColumn<Transaction, Integer> idCol = new TableColumn<>("ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        
+        TableColumn<Transaction, Integer> custCol = new TableColumn<>("Cust ID");
+        custCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        
+        TableColumn<Transaction, Integer> serviceCol = new TableColumn<>("Service ID");
+        serviceCol.setCellValueFactory(new PropertyValueFactory<>("serviceId"));
+
+        TableColumn<Transaction, String> dateCol = new TableColumn<>("Date");
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        TableColumn<Transaction, String> statusCol = new TableColumn<>("Status");
+        statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        
+        TableColumn<Transaction, Double> weightCol = new TableColumn<>("Weight");
+        weightCol.setCellValueFactory(new PropertyValueFactory<>("totalWeight"));
+
+        table.getColumns().addAll(idCol, custCol, serviceCol, dateCol, statusCol, weightCol);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    }
+    
+    private void loadData() {
+        ArrayList<Transaction> rawData = trController.getAllTransactions();
+        masterData = FXCollections.observableArrayList(rawData);
+        filteredData = new FilteredList<>(masterData, p -> true); 
+        table.setItems(filteredData);
+    }
+    
+    private void addFilterBehaviour() {
+        filterBtn.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            filteredData.setPredicate(transaction -> {
+                if (!isNowSelected) {
+                    return true;
+                }
+                return "Finished".equalsIgnoreCase(transaction.getStatus());
+            });
+        });
+    }
+    
+    public static Scene getScene(Stage stage) {
+        return new ViewTransactionPage(stage).init();
+    }
+}
