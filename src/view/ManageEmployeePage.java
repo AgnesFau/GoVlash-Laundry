@@ -23,7 +23,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Employee;
-import model.Service;
 
 public class ManageEmployeePage {
 	Stage stage;
@@ -60,10 +59,6 @@ public class ManageEmployeePage {
 		maleRb = new RadioButton("Male");
 		femaleRb = new RadioButton("Female");
 		dobPck = new DatePicker();
-		
-		String week_days[] =
-            { "Monday", "Tuesday", "Wednesday",
-                             "Thursday", "Friday" };
 
 		roleCb = new ComboBox(FXCollections.observableArrayList("LaundryStaff", "Admin", "Receptionist"));
 		

@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import db.DbConnect;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
