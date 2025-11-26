@@ -53,7 +53,7 @@ public class Main extends Application{
         manageServiceScene = ManageServicePage.getScene(stage);
         manageEmployeeScene = ManageEmployeePage.getScene(stage);
 
-        stage.setScene(manageEmployeeScene);
+        stage.setScene(loginScene);
         stage.show();
 	}
 

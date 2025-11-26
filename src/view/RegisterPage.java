@@ -69,7 +69,6 @@ public class RegisterPage {
 	
 	private void addBehaviour() {
 	    submitBtn.setOnAction(e -> {
-
 	        RadioButton selectedGender = (RadioButton) genderTg.getSelectedToggle();
 	        String gender = selectedGender == null ? null : selectedGender.getText();
 

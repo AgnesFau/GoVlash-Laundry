@@ -1,12 +1,16 @@
 package view;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+import controller.UserController;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -32,6 +36,8 @@ public class ManageEmployeePage {
 	DatePicker dobPck;
 	ToggleGroup genderTg;
 	
+	ComboBox<String> roleCb;
+	
 	Button addBtn;
 	
 	TableView<Employee> employeeTable;
@@ -55,19 +61,51 @@ public class ManageEmployeePage {
 		femaleRb = new RadioButton("Female");
 		dobPck = new DatePicker();
 		
+		String week_days[] =
+            { "Monday", "Tuesday", "Wednesday",
+                             "Thursday", "Friday" };
+
+		roleCb = new ComboBox(FXCollections.observableArrayList("LaundryStaff", "Admin", "Receptionist"));
+		
 		addBtn = new Button("Hire Employee");
 		femaleRb.setToggleGroup(genderTg);
 		maleRb.setToggleGroup(genderTg);
 		
 		initTable();
+		addBehaviour();
 		
 		container = new VBox();
-		container.getChildren().addAll(usernameLbl, usernameTxt, passwordLbl, passwordTxt, confirmLbl, confirmTxt, emailLbl, emailTxt, genderLbl, femaleRb, maleRb, dobLbl, dobPck, addBtn, employeeTable);
+		container.getChildren().addAll(usernameLbl, usernameTxt, passwordLbl, passwordTxt, 
+				confirmLbl, confirmTxt, emailLbl, emailTxt, genderLbl, femaleRb, maleRb, dobLbl, 
+				dobPck, roleCb, addBtn, employeeTable);
 		
 		
 		scene = new Scene(container, 1000, 500);
 		
 		return scene;
+	}
+	
+	private void addBehaviour() {
+		addBtn.setOnAction(e -> {
+			RadioButton selectedGender = (RadioButton) genderTg.getSelectedToggle();
+	        String gender = selectedGender == null ? null : selectedGender.getText();
+
+	        UserController controller = new UserController();
+
+	        String error = controller.addUser(
+	                usernameTxt.getText(),
+	                emailTxt.getText(),
+	                passwordTxt.getText(),
+	                confirmTxt.getText(),
+	                gender,
+	                LocalDate.parse(dobPck.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))),
+	                roleCb.getValue()
+	        );
+	        
+	        if(error != null) {
+	        	showAlert(error, AlertType.ERROR);
+	        }
+		});
 	}
 	
 	private void initTable() {
