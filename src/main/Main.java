@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.User;
 import view.LoginPage;
+import view.ManageServicePage;
 import view.RegisterPage;
 
 public class Main extends Application{
@@ -17,6 +18,7 @@ public class Main extends Application{
 	UserController user = new UserController();
 	public static Scene loginScene;
     public static Scene registerScene;
+    public static Scene manageServiceScene;
 	
 	public static void goToLogin(Stage stage) {
         stage.setScene(loginScene);
@@ -24,6 +26,10 @@ public class Main extends Application{
 
     public static void goToRegister(Stage stage) {
         stage.setScene(registerScene);
+    }
+    
+    public static void goToManageService(Stage stage) {
+    	stage.setScene(manageServiceScene);
     }
 	
 	public static void main(String[] args) {
@@ -40,8 +46,9 @@ public class Main extends Application{
 	public void start(Stage stage) throws Exception {
         loginScene = LoginPage.getScene(stage);
         registerScene = RegisterPage.getScene(stage);
+        manageServiceScene = ManageServicePage.getScene(stage);
 
-        stage.setScene(loginScene);
+        stage.setScene(manageServiceScene);
         stage.show();
 	}
 
