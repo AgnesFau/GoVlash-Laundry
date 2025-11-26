@@ -42,4 +42,12 @@ public class TransactionController {
 	public String assignStaffToTransaction(int transactionId, int staffId) {
         return Transaction.assignStaffToTransaction(transactionId, staffId);
     }
+	
+	public ArrayList<Transaction> getAssignedOrdersByLaundryStaffID(int laundryStaffID){
+		return Transaction.getAssignedOrdersByLaundryStaffID(laundryStaffID);
+	}
+	
+	public void updateTransactionStatus(int transactionID, String status) {
+		Transaction.updateTransactionStatus(transactionID, status);
+	}
 }

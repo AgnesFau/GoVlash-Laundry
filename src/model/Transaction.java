@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -144,6 +145,55 @@ public class Transaction {
 	    }
 	}
 
+	public static ArrayList<Transaction> getAssignedOrdersByLaundryStaffID(int laundryStaffID) {
+	    ArrayList<Transaction> trList = new ArrayList<>();
+	    String query = "SELECT * FROM transactions WHERE laundry_staff_id = ? ORDER BY date DESC";
+
+	    try {
+	        PreparedStatement ps = DbConnect.getInstance().prepareStatement(query);
+	        ps.setInt(1, laundryStaffID);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            int id = rs.getInt("id");
+	            int serviceId = rs.getInt("service_id");
+	            int custId = rs.getInt("customer_id");
+	            int recepId = rs.getInt("receptionist_id");
+	            int staffId = rs.getInt("laundry_staff_id");
+
+	            Date sqlDate = rs.getDate("date");
+	            LocalDate date = (sqlDate != null) ? sqlDate.toLocalDate() : null;
+
+	            String status = rs.getString("status");
+	            Double totalWeight = rs.getDouble("total_weight");
+	            String notes = rs.getString("notes");
+
+	            trList.add(new Transaction(id, serviceId, custId, recepId, staffId, date, status, totalWeight, notes));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return trList;
+	}
+
+	public static void updateTransactionStatus(int transactionId, String status) {
+	    String query = "UPDATE transactions SET status = ? WHERE id = ?";
+
+	    try {
+	        PreparedStatement ps = DbConnect.getInstance().prepareStatement(query);
+	        ps.setString(1, status);
+	        ps.setInt(2, transactionId);
+
+	        int rows = ps.executeUpdate();
+	        if (rows > 0) return;
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
 	
 	public int getId() {
 		return id;

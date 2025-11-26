@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Service;
 import model.User;
+import view.LaundryStaffPage;
 import view.LoginPage;
 import view.ManageEmployeePage;
 import view.ManagePendingTransaction;
@@ -43,6 +44,9 @@ public class Main extends Application {
     }
     public static void goToViewTransactions(Stage stage) {
         stage.setScene(ViewTransactionPage.getScene(stage));
+    }
+    public static void goToLaundryStaffPage(Stage stage) {
+    	stage.setScene(LaundryStaffPage.getScene(stage, currentUser.getId()));
     }
 	public static void main(String[] args) {
 		try {
