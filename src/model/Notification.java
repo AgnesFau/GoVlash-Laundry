@@ -1,77 +1,99 @@
 package model;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import db.DbConnect;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Notification {
-	private int id;
-	private int recipientId;
-	private String message;
-	private LocalDateTime createdAt;
-	private Boolean isRead;
-	
-	private ArrayList<Notification> listNotification = new ArrayList<Notification>();
-	
-	public Notification(int recipientId, String message, LocalDateTime createdAt, Boolean isRead) {
-		super();
-		this.id = listNotification.size()+1;
-		this.recipientId = recipientId;
-		this.message = message;
-		this.createdAt = createdAt;
-		this.isRead = isRead;
-		listNotification.add(this);
-	}
-	
-	public ArrayList<Notification> getNotificationByRecipientId(int id){
-		ArrayList<Notification> listByRecipientId = new ArrayList<Notification>();
-		
-		for (Notification notification : listNotification) {
-			if(this.recipientId == id) {
-				listByRecipientId.add(notification);
-			}
-		}
-		
-		return listByRecipientId;
-	}
-	
-	public Notification getNotificationById(int id) {
-		for (Notification notification : listNotification) {
-			if(notification.id == id) {
-				return notification;
-			}
-		}
-		
-		return null;
-	}
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public int getRecipientId() {
-		return recipientId;
-	}
-	public void setRecipientId(int recipientId) {
-		this.recipientId = recipientId;
-	}
-	public String getMessage() {
-		return message;
-	}
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-	public Boolean getIsRead() {
-		return isRead;
-	}
-	public void setIsRead(Boolean isRead) {
-		this.isRead = isRead;
-	}
+    private IntegerProperty id;
+    private IntegerProperty recipientId;
+    private StringProperty message;
+    private StringProperty createdAt;
+    private StringProperty status;
+
+    public Notification(int id, int recipientId, String message, LocalDateTime createdAt, boolean isRead) {
+        this.id = new SimpleIntegerProperty(id);
+        this.recipientId = new SimpleIntegerProperty(recipientId);
+        this.message = new SimpleStringProperty(message);
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        this.createdAt = new SimpleStringProperty(createdAt.format(formatter));
+        
+        this.status = new SimpleStringProperty(isRead ? "Read" : "Unread");
+    }
+    public static ArrayList<Notification> getUserNotifications(int userId) {
+        ArrayList<Notification> list = new ArrayList<>();
+        String query = "SELECT * FROM notifications WHERE recipient_id = ? ORDER BY created_at DESC";
+        
+        try {
+            PreparedStatement ps = DbConnect.getInstance().prepareStatement(query);
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                list.add(new Notification(
+                    rs.getInt("id"),
+                    rs.getInt("recipient_id"),
+                    rs.getString("message"),
+                    rs.getTimestamp("created_at").toLocalDateTime(),
+                    rs.getBoolean("is_read")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public static void markAsRead(int notifId) {
+        String query = "UPDATE notifications SET is_read = 1 WHERE id = ?";
+        try {
+            PreparedStatement ps = DbConnect.getInstance().prepareStatement(query);
+            ps.setInt(1, notifId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void delete(int notifId) {
+        String query = "DELETE FROM notifications WHERE id = ?";
+        try {
+            PreparedStatement ps = DbConnect.getInstance().prepareStatement(query);
+            ps.setInt(1, notifId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public IntegerProperty getId() { 
+    	return id; 
+    }
+    public StringProperty getMessage() {
+    	return message; 
+    }
+    public StringProperty getCreatedAt() { 
+    	return createdAt; 
+    }
+    public StringProperty getStatus() { 
+    	return status; 
+    }
+    public StringProperty messageProperty() { 
+    	return message; 
+    }
+    public StringProperty createdAtProperty() { 
+    	return createdAt; 
+    }
+    public StringProperty statusProperty() { 
+    	return status; 
+    }
 }
