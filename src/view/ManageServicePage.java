@@ -1,5 +1,6 @@
 package view;
 
+import component.ServiceTableComponent;
 import controller.ServiceController;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -44,9 +45,9 @@ public class ManageServicePage {
 		TableColumn<Service, Number> durationColumn = new TableColumn<>("Duration");
 		durationColumn.setCellValueFactory(data -> data.getValue().getDuration());
 		
-		serviceTable = new TableView<Service>();
-		serviceTable.getColumns().addAll(idColumn, nameColumn, descColumn, priceColumn, durationColumn);
-		serviceTable.setItems(Service.getListService());
+		serviceTable = ServiceTableComponent.create();
+//		serviceTable.getColumns().addAll(idColumn, nameColumn, descColumn, priceColumn, durationColumn);
+//		serviceTable.setItems(Service.getListService());
 		
 		nameLbl = new Label("Service Name");
 		descLbl = new Label("Description");		
