@@ -103,30 +103,15 @@ public class RegisterPage {
 		mainLayout.getChildren().addAll(titleLbl, formLayout, loginBtn);
 		
 		addBehaviour();
-		
-<<<<<<< HEAD
 		scene = new Scene(mainLayout, 800, 600);
-=======
-		scene = new Scene(container, 1000, 500);
-		
->>>>>>> 905a5eb44af13a43df62599e2469a6fd7b393394
 		return scene;
 	}
 	
 	private void addBehaviour() {
-<<<<<<< HEAD
 		submitBtn.setOnAction(e -> {
-
 			RadioButton selectedGender = (RadioButton) genderTg.getSelectedToggle();
 			String gender = selectedGender == null ? null : selectedGender.getText();
-=======
-	    submitBtn.setOnAction(e -> {
-	        RadioButton selectedGender = (RadioButton) genderTg.getSelectedToggle();
-	        String gender = selectedGender == null ? null : selectedGender.getText();
->>>>>>> 905a5eb44af13a43df62599e2469a6fd7b393394
-
 			UserController controller = new UserController();
-
 			String error = controller.addUser(
 					usernameTxt.getText(),
 					emailTxt.getText(),

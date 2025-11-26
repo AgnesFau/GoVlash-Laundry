@@ -1,5 +1,5 @@
-.classpath
-/controller/
+/component/
+/view/
 /main/
 /model/
-/view/
+/controller/

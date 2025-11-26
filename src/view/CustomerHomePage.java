@@ -40,8 +40,9 @@ public class CustomerHomePage {
     }
 
     private void addActions() {
-        orderBtn.setOnAction(e -> {
-            System.out.println("Menuju halaman Order...");
+    	orderBtn.setOnAction(e -> {
+            OrderPage orderPage = new OrderPage(stage, currentUser);
+            stage.setScene(orderPage.init());
         });
         historyBtn.setOnAction(e -> {
             HistoryPage historyPage = new HistoryPage(stage, currentUser);
