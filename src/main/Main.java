@@ -6,8 +6,11 @@ import controller.UserController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Service;
 import model.User;
 import view.LoginPage;
+import view.ManageEmployeePage;
+import view.ManageServicePage;
 import view.RegisterPage;
 
 public class Main extends Application {
@@ -16,19 +19,36 @@ public class Main extends Application {
 	
 	UserController user = new UserController();
 	public static Scene loginScene;
+<<<<<<< HEAD
 	public static Scene registerScene;
+=======
+    public static Scene registerScene;
+    public static Scene manageServiceScene;
+    public static Scene manageEmployeeScene;
+>>>>>>> 905a5eb44af13a43df62599e2469a6fd7b393394
 	
 	public static void goToLogin(Stage stage) {
 		stage.setScene(loginScene);
 	}
 
+<<<<<<< HEAD
 	public static void goToRegister(Stage stage) {
 		stage.setScene(registerScene);
 	}
+=======
+    public static void goToRegister(Stage stage) {
+        stage.setScene(registerScene);
+    }
+    
+    public static void goToManageService(Stage stage) {
+    	stage.setScene(manageServiceScene);
+    }
+>>>>>>> 905a5eb44af13a43df62599e2469a6fd7b393394
 	
 	public static void main(String[] args) {
 		try {
 			User.loadUsersFromDB();
+			Service.loadServicesFromDB();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -38,8 +58,15 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+<<<<<<< HEAD
 		loginScene = LoginPage.getScene(stage);
 		registerScene = RegisterPage.getScene(stage);
+=======
+        loginScene = LoginPage.getScene(stage);
+        registerScene = RegisterPage.getScene(stage);
+        manageServiceScene = ManageServicePage.getScene(stage);
+        manageEmployeeScene = ManageEmployeePage.getScene(stage);
+>>>>>>> 905a5eb44af13a43df62599e2469a6fd7b393394
 
 		stage.setScene(loginScene);
 		stage.show();

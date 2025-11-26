@@ -11,7 +11,6 @@ import model.User;
 
 public class UserController {
 	public String addUser(String name, String email, String password, String confirmPassword, String gender, LocalDate dob, String role) {
-
 		if(name.isEmpty() || email.isEmpty() || password.isEmpty() || gender == null || dob == null){
 			return "All fields must be filled!";
 		}

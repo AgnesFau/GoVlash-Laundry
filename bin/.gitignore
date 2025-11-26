@@ -1,1 +1,5 @@
 .classpath
+/controller/
+/main/
+/model/
+/view/

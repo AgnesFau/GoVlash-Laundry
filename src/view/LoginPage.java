@@ -68,7 +68,6 @@ public class LoginPage {
 		mainLayout.getChildren().addAll(titleLbl, formLayout, registerBtn);
 
 		addBehaviour();
-		
 		scene = new Scene(mainLayout, 800, 600); 
 		return scene;
 	}
@@ -86,6 +85,9 @@ public class LoginPage {
 				if(user.getRole().equals("Customer")) {
 					CustomerHomePage homePage = new CustomerHomePage(stage, user);
 					stage.setScene(homePage.init());
+				}
+				else if(user.getRole().equals("Admin")) {
+					Main.goToManageService(stage);
 				}
 			}
 		});
