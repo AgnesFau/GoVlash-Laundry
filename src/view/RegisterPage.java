@@ -62,14 +62,13 @@ public class RegisterPage {
 		container.getChildren().addAll(usernameLbl, usernameTxt, passwordLbl, passwordTxt, confirmLbl, confirmTxt, emailLbl, emailTxt, genderLbl, femaleRb, maleRb, dobLbl, dobPck, submitBtn, loginBtn);
 		addBehaviour();
 		
-		scene = new Scene(container, 1000, 800);
+		scene = new Scene(container, 1000, 500);
 		
 		return scene;
 	}
 	
 	private void addBehaviour() {
 	    submitBtn.setOnAction(e -> {
-
 	        RadioButton selectedGender = (RadioButton) genderTg.getSelectedToggle();
 	        String gender = selectedGender == null ? null : selectedGender.getText();
 

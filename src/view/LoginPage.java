@@ -39,7 +39,7 @@ public class LoginPage {
 		container.getChildren().addAll(emailLbl, emailTxt, passwordLbl, passwordTxt, submitBtn, registerBtn);
 
 		addBehaviour();
-		scene = new Scene(container, 1000, 800);
+		scene = new Scene(container, 1000, 500);
 		return scene;
 	}
 	
@@ -52,7 +52,9 @@ public class LoginPage {
 			}
 			else {
 				Main.currentUser = user;
-				//redirect to homepage
+				if(Main.currentUser.getRole().equals("Admin")) {
+					Main.goToManageService(stage);
+				}
 			}
 		});
 		registerBtn.setOnAction(e -> {
