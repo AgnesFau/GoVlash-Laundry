@@ -6,6 +6,7 @@ import controller.UserController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Service;
 import model.User;
 import view.LoginPage;
 import view.ManageServicePage;
@@ -35,6 +36,7 @@ public class Main extends Application{
 	public static void main(String[] args) {
 		try {
 			User.loadUsersFromDB();
+			Service.loadServicesFromDB();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

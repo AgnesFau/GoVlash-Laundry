@@ -6,9 +6,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -21,11 +23,8 @@ public class ManageServicePage {
 	Scene scene;
 	
 	ServiceController controller = new ServiceController();
-	
-    private SimpleStringProperty title;
-    private SimpleStringProperty actor;
-    private SimpleDoubleProperty price;
-    private SimpleIntegerProperty rating;
+    
+	TableView<Service> serviceTable;
     
     Label nameLbl, descLbl, priceLbl, durationLbl;
     TextField nameTxt, descTxt, priceTxt, durationTxt;
@@ -34,10 +33,20 @@ public class ManageServicePage {
     VBox container;
 	
 	private Scene init() {
-		TableColumn<Service, String> titleColumn = new TableColumn<>("Id");
-		TableColumn<Service, String> actorColumn = new TableColumn<>("Name");
+		TableColumn<Service, Number> idColumn = new TableColumn<>("Id");
+		idColumn.setCellValueFactory(data -> data.getValue().getId());
+		TableColumn<Service, String> nameColumn = new TableColumn<>("Name");
+		nameColumn.setCellValueFactory(data -> data.getValue().getName());
+		TableColumn<Service, String> descColumn = new TableColumn<>("Description");
+		descColumn.setCellValueFactory(data -> data.getValue().getDescription());
 		TableColumn<Service, Number> priceColumn = new TableColumn<>("Price");
-		TableColumn<Service, Number> ratingColumn = new TableColumn<>("IMDB Rating");
+		priceColumn.setCellValueFactory(data -> data.getValue().getPrice());
+		TableColumn<Service, Number> durationColumn = new TableColumn<>("Duration");
+		durationColumn.setCellValueFactory(data -> data.getValue().getDuration());
+		
+		serviceTable = new TableView<Service>();
+		serviceTable.getColumns().addAll(idColumn, nameColumn, descColumn, priceColumn, durationColumn);
+		serviceTable.setItems(Service.getListService());
 		
 		nameLbl = new Label("Service Name");
 		descLbl = new Label("Description");		
@@ -52,7 +61,7 @@ public class ManageServicePage {
 		addBtn = new Button("Add New Service");
 		
 		container = new VBox();
-		container.getChildren().addAll(nameLbl, nameTxt, descLbl, descTxt, priceLbl, priceTxt, durationLbl, durationTxt, addBtn);
+		container.getChildren().addAll(nameLbl, nameTxt, descLbl, descTxt, priceLbl, priceTxt, durationLbl, durationTxt, addBtn, serviceTable);
 		
 		adddBehaviour();
 		scene = new Scene(container, 1000, 800);
@@ -75,17 +84,10 @@ public class ManageServicePage {
 			String error = controller.addService(nameTxt.getText(), descTxt.getText(), Double.parseDouble(priceTxt.getText()), Integer.parseInt(durationTxt.getText()));
 			
 			if(error != null) {
-				showAlert(error);
+				showAlert(error, AlertType.ERROR);
 			}
 			else {
-				System.out.println("Successfully add a new service");
-				for (Service service : Service.getListService()) {
-					System.out.println(service.getId());
-					System.out.println(service.getName());
-					System.out.println(service.getDescription());
-					System.out.println(service.getPrice());
-					System.out.println(service.getDuration());
-				}
+				showAlert("Successfully add a new service", AlertType.INFORMATION);
 			}
 		});
 	}
@@ -94,8 +96,8 @@ public class ManageServicePage {
 	    return new ManageServicePage(stage).init();
 	}
 
-	private void showAlert(String message) {
-	    Alert alert = new Alert(Alert.AlertType.ERROR);
+	private void showAlert(String message, AlertType type) {
+	    Alert alert = new Alert(type);
 	    alert.setTitle("Error");
 	    alert.setContentText(message);
 	    alert.show();
