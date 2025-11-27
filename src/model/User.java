@@ -70,6 +70,16 @@ public abstract class User {
 		
 		return null;
 	}
+	
+	public static User getUserById(int id) {
+		for (User user : userList) {
+			if(user.id == id) {
+				return user;
+			}
+		}
+		
+		return null;
+	}
 
 	public static void addUser(User user) throws SQLException {
 	    String sql = "INSERT INTO users (username, email, password, gender, dob, role) VALUES (?, ?, ?, ?, ?, ?)";
