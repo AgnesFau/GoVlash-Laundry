@@ -1,9 +1,11 @@
 package model;
 
 import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,6 +33,20 @@ public class Notification {
         
         this.status = new SimpleStringProperty(isRead ? "Read" : "Unread");
     }
+    
+    public static void addNotification(int recipientId) throws SQLException {
+    	String sql = "INSERT INTO notifications (recipient_id, message, created_at, is_read)"
+    			+ " VALUES (?, ?, ?, ?)";
+    	
+    	PreparedStatement ps = DbConnect.getInstance().prepareStatement(sql);
+    	ps.setInt(1, recipientId);
+    	ps.setString(2, "Your order is finished and ready for pickup. Thank you for choosing our service!");
+    	ps.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+    	ps.setBoolean(4, false);
+    	
+    	ps.executeUpdate();
+    }
+    
     public static ArrayList<Notification> getUserNotifications(int userId) {
         ArrayList<Notification> list = new ArrayList<>();
         String query = "SELECT * FROM notifications WHERE recipient_id = ? ORDER BY created_at DESC";
@@ -54,6 +70,7 @@ public class Notification {
         }
         return list;
     }
+    
     public static void markAsRead(int notifId) {
         String query = "UPDATE notifications SET is_read = 1 WHERE id = ?";
         try {
@@ -75,6 +92,7 @@ public class Notification {
             e.printStackTrace();
         }
     }
+    
     public IntegerProperty getId() { 
     	return id; 
     }
