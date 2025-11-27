@@ -78,7 +78,7 @@ public class UserController {
 	    }
 		if(role.equals("Laundry Staff") || role.equals("Admin") || role.equals("Receptionist")) { 
 	    	if (!email.endsWith("@govlash.com")) {
-	    		return "Email must ends with @goovlash.com";
+	    		return "Email must ends with @govlash.com";
 	    	}
 	    	else if(LocalDate.now().getYear()-dob.getYear() <17) {
 		    	return "You must be at least 17 years old";
