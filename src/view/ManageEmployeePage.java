@@ -31,6 +31,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import main.Main;
 import model.Employee;
+import model.User;
 
 public class ManageEmployeePage {
     Stage stage;
@@ -45,11 +46,13 @@ public class ManageEmployeePage {
     ToggleGroup genderTg;
     ComboBox<String> roleCb;
     Button addBtn, backBtn;
-    TableView<Employee> employeeTable;
+    TableView<User> employeeTable;
     
     // Layouts
     VBox mainLayout;
     GridPane formLayout;
+    
+    UserController controller = new UserController();
     
     public ManageEmployeePage(Stage stage) {
         this.stage = stage;
@@ -125,11 +128,9 @@ public class ManageEmployeePage {
         addBtn.setOnAction(e -> {
             RadioButton selectedGender = (RadioButton) genderTg.getSelectedToggle();
             String gender = selectedGender == null ? null : selectedGender.getText();
-
-            UserController controller = new UserController();
             LocalDate dob = (dobPck.getValue() != null) ? dobPck.getValue() : null;
 
-            String error = controller.addUser(
+            String error = controller.validateAddEmployee(
                     usernameTxt.getText(),
                     emailTxt.getText(),
                     passwordTxt.getText(),
@@ -142,6 +143,15 @@ public class ManageEmployeePage {
             if(error != null) {
                 showAlert(error, AlertType.ERROR);
             } else {
+            	controller.addEmployee(
+                        usernameTxt.getText(),
+                        emailTxt.getText(),
+                        passwordTxt.getText(),
+                        confirmTxt.getText(),
+                        gender,
+                        dob,
+                        roleCb.getValue()
+                );
                 showAlert("Employee hired successfully!", AlertType.INFORMATION);
             }
         });
@@ -154,27 +164,27 @@ public class ManageEmployeePage {
     private void initTable() {
         employeeTable = new TableView<>();
         
-        TableColumn<Employee, Number> idColumn = new TableColumn<>("Id");
+        TableColumn<User, Number> idColumn = new TableColumn<>("Id");
         idColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getId()));
         
-        TableColumn<Employee, String> usernameColumn = new TableColumn<>("Username");
+        TableColumn<User, String> usernameColumn = new TableColumn<>("Username");
         usernameColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getUsername()));
         
-        TableColumn<Employee, String> emailColumn = new TableColumn<>("Email");
+        TableColumn<User, String> emailColumn = new TableColumn<>("Email");
         emailColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEmail()));
         
-        TableColumn<Employee, String> genderColumn = new TableColumn<>("Gender");
+        TableColumn<User, String> genderColumn = new TableColumn<>("Gender");
         genderColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getGender()));
         
-        TableColumn<Employee, String> dobColumn = new TableColumn<>("DOB");
+        TableColumn<User, String> dobColumn = new TableColumn<>("DOB");
         dobColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDob().toString()));
         
-        TableColumn<Employee, String> roleColumn = new TableColumn<>("Role");
+        TableColumn<User, String> roleColumn = new TableColumn<>("Role");
         roleColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRole()));
 
         employeeTable.getColumns().addAll(idColumn, usernameColumn, emailColumn, genderColumn, dobColumn, roleColumn);
         
-        employeeTable.setItems(Employee.getListEmployee());
+        employeeTable.setItems(controller.getAllEmployees());
         employeeTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
     }
     
