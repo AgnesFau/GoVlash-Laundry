@@ -35,6 +35,8 @@ public class RegisterPage {
 	GridPane formLayout;
 	VBox mainLayout;
 	
+	UserController userController = new UserController();
+	
 	private Scene init() {
 		titleLbl = new Label("Register New Account");
 		titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -111,21 +113,28 @@ public class RegisterPage {
 		submitBtn.setOnAction(e -> {
 			RadioButton selectedGender = (RadioButton) genderTg.getSelectedToggle();
 			String gender = selectedGender == null ? null : selectedGender.getText();
-			UserController controller = new UserController();
-			String error = controller.addUser(
+			String error = userController.validateAddCustomer(
 					usernameTxt.getText(),
 					emailTxt.getText(),
 					passwordTxt.getText(),
 					confirmTxt.getText(),
 					gender,
-					dobPck.getValue(),
-					"Customer"
+					dobPck.getValue()
 			);
 
 			if (error != null) {
 				showAlert(error); 
 			}
 			else {
+				userController.addUser(
+						usernameTxt.getText(),
+						emailTxt.getText(),
+						passwordTxt.getText(),
+						confirmTxt.getText(),
+						gender,
+						dobPck.getValue(),
+						"Customer"
+				);
 				Alert success = new Alert(Alert.AlertType.INFORMATION);
 				success.setTitle("Success");
 				success.setContentText("Registration successful! Please login.");
