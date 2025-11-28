@@ -7,18 +7,18 @@ import javafx.collections.ObservableList;
 
 public class Employee extends User{
 	
-	private static ObservableList<Employee> listEmployee = FXCollections.observableArrayList();
+	private static ObservableList<User> listEmployee = FXCollections.observableArrayList();
 
 	public Employee(int id, String username, String email, String password, String gender, LocalDate dob, String role) {
 		super(id, username, email, password, gender, dob, role);
 		listEmployee.add(this);
 	}
 
-	public static ObservableList<Employee> getListEmployee() {
+	public static ObservableList<User> getListEmployee() {
 		return listEmployee;
 	}
 
-	public void setListEmployee(ObservableList<Employee> listEmployee) {
+	public void setListEmployee(ObservableList<User> listEmployee) {
 		Employee.listEmployee = listEmployee;
 	}	
 }

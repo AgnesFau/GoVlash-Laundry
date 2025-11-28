@@ -51,7 +51,7 @@ public abstract class User {
 		return userByRole;
 	}
 	
-	public User getUserByEmail(String email){
+	public static User getUserByEmail(String email){
 		for (User user : userList) {
 			if(user.email.equals(email)) {
 				return user;
@@ -61,7 +61,7 @@ public abstract class User {
 		return null;
 	}
 	
-	public User getUserByName(String name) {
+	public static User getUserByName(String name) {
 		for (User user : userList) {
 			if(user.username.equals(name)) {
 				return user;
