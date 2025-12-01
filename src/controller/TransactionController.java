@@ -50,4 +50,8 @@ public class TransactionController {
 	public void updateTransactionStatus(int transactionID, String status) {
 		Transaction.updateTransactionStatus(transactionID, status);
 	}
+	
+	public void updateNotified(int transactionId, int isNotified) {
+		Transaction.updateNotified(transactionId, isNotified);
+	}
 }
