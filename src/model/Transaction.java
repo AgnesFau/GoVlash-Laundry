@@ -19,6 +19,7 @@ public class Transaction {
 	private String status;
 	private Double totalWeight;
 	private String notes;
+	private boolean isNotified = false;
 	
 	private ArrayList<Transaction> listTransactions = new ArrayList<Transaction>();
 
@@ -68,8 +69,12 @@ public class Transaction {
                 String status = rs.getString("status");
                 Double totalWeight = rs.getDouble("total_weight");
                 String notes = rs.getString("notes");
+                boolean isNotified = rs.getBoolean("is_notified");
                 
-                trList.add(new Transaction(id, serviceId, custId, recepId, staffId, date, status, totalWeight, notes));
+                Transaction tr = new Transaction(id, serviceId, custId, recepId, staffId, date, status, totalWeight, notes);
+                tr.setIsNotified(isNotified);
+
+                trList.add(tr);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -111,8 +116,10 @@ public class Transaction {
                 String status = rs.getString("status");
                 Double totalWeight = rs.getDouble("total_weight");
                 String notes = rs.getString("notes");
+                boolean isNotified = rs.getBoolean("is_notified");
                 
                 Transaction tr = new Transaction(id, serviceId, custId, recepId, staffId, date, status, totalWeight, notes);
+                tr.setIsNotified(isNotified);
                 trList.add(tr);
             }
             
@@ -195,6 +202,19 @@ public class Transaction {
 	    }
 	}
 	
+	public static void updateNotified(int transactionId, int isNotified) {
+		String query = "UPDATE transactions SET is_notified = ? WHERE id = ?";
+		
+		try {
+			PreparedStatement ps = DbConnect.getInstance().prepareStatement(query);
+			ps.setInt(1, isNotified);
+			ps.setInt(2, transactionId);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -273,5 +293,13 @@ public class Transaction {
 
 	public void setListTransactions(ArrayList<Transaction> listTransactions) {
 		this.listTransactions = listTransactions;
+	}
+	
+	public boolean isNotified() {
+	    return isNotified;
+	}
+
+	public void setIsNotified(boolean isNotified) {
+	    this.isNotified = isNotified;
 	}
 }
