@@ -103,8 +103,9 @@ public class ViewTransactionPage {
     			sendNotif.setOnAction(e -> {
     				Transaction tr = getTableView().getItems().get(getIndex());
     				int recipientId = tr.getCustomerId();
+    				int transactionId = tr.getId();
     				
-    				if(!tr.getStatus().equalsIgnoreCase("Finish")) {
+    				if(!tr.getStatus().equalsIgnoreCase("Finished")) {
     	                showAlert("Transaction is not finished!", AlertType.ERROR);
     	                return;
     				}
@@ -113,7 +114,12 @@ public class ViewTransactionPage {
     				
     				if(err != null) {
     					showAlert(err, AlertType.ERROR);
+    					return;
     				}
+    				
+    				trController.updateNotified(transactionId, 1);
+    				tr.setIsNotified(true);
+    				table.refresh();
     			});
     		}
     		
@@ -124,15 +130,20 @@ public class ViewTransactionPage {
                     setGraphic(null);
                 } else {
                 	Transaction tr = getTableView().getItems().get(getIndex());
-                	boolean isPending = !tr.getStatus().equalsIgnoreCase("Finished") && !tr.getStatus().equalsIgnoreCase("Finish");
-                	sendNotif.setDisable(isPending);
+                	boolean isPending = !tr.getStatus().equalsIgnoreCase("Finished");
+                	boolean isNotified = tr.isNotified();
+                	sendNotif.setDisable(isPending || isNotified);
                 	
-                	if (isPending) {
+                	if (isNotified) {
+                	    sendNotif.setText("Sent");
+                	}
+                	
+                	if (isPending || isNotified) {
                 		sendNotif.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
                 	} else {
                 		sendNotif.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
                 	}
-                	
+                	                	
                     HBox box = new HBox(sendNotif);
                     box.setAlignment(Pos.CENTER);
                     setGraphic(box);
