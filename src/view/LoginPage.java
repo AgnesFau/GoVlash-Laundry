@@ -73,32 +73,52 @@ public class LoginPage {
 	}
 	
 	private void addBehaviour() {
-		submitBtn.setOnAction(e -> {
-			User user = userController.login(emailTxt.getText(), passwordTxt.getText());
-			
-			if(user == null) {
-				showAlert("Invalid Credential");
-			}
-			else {
-				Main.currentUser = user; 
-				
-				if(user.getRole().equals("Customer")) {
-					CustomerHomePage homePage = new CustomerHomePage(stage, user);
-					stage.setScene(homePage.init());
-				}
-				else if(user.getRole().equals("Admin")) {
-					Main.goToManageService(stage);
-				}
-				else if(user.getRole().equals("Laundry Staff")) {
-					Main.goToLaundryStaffPage(stage);
-				}
-			}
-		});
-		
-		registerBtn.setOnAction(e -> {
-			Main.goToRegister(stage);
-		});
-	}
+        submitBtn.setOnAction(e -> {
+            System.out.println("--- DEBUGGING LOGIN START ---"); // Debug 1
+            
+            User user = userController.login(emailTxt.getText(), passwordTxt.getText());
+            
+            if(user == null) {
+                System.out.println("User Tidak Ditemukan / Password Salah"); // Debug 2
+                showAlert("Invalid Credential");
+            }
+            else {
+                Main.currentUser = user; 
+                String role = user.getRole();
+                
+                // Debugging: Lihat apa isi role sebenarnya
+                System.out.println("Login Sukses! Email: " + user.getEmail());
+                System.out.println("Role dari Database: '" + role + "'"); // Perhatikan tanda petik ''
+                
+                if(role.equals("Customer")) {
+                    System.out.println("Masuk ke if Customer");
+                    CustomerHomePage homePage = new CustomerHomePage(stage, user);
+                    stage.setScene(homePage.init());
+                }
+                else if(role.equals("Admin")) {
+                    System.out.println("Masuk ke if Admin");
+                    Main.goToManageService(stage);
+                }
+                else if(role.equals("Laundry Staff")) {
+                    System.out.println("Masuk ke if Laundry Staff");
+                    Main.goToLaundryStaffPage(stage);
+                }
+                else if(role.equals("Receptionist")) { 
+                    System.out.println("Masuk ke if Receptionist");
+                    // Pastikan method ini ada dan tidak null
+                    Main.goToManagePendingTransaction(stage);
+                }
+                else {
+                    System.out.println("Role tidak dikenali: " + role);
+                }
+            }
+            System.out.println("--- DEBUGGING LOGIN END ---");
+        });
+        
+        registerBtn.setOnAction(e -> {
+            Main.goToRegister(stage);
+        });
+    }
 	
 	private void showAlert(String message) {
 		Alert alert = new Alert(Alert.AlertType.ERROR);

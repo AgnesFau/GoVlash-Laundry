@@ -58,6 +58,9 @@ public class Main extends Application {
 		
 		launch(args);
 	}
+	public static void goToManagePendingTransaction(Stage stage) {
+        stage.setScene(ManagePendingTransaction.getScene(stage));
+    }
 
 	@Override
 	public void start(Stage stage) throws Exception {
