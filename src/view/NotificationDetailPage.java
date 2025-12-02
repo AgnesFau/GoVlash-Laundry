@@ -35,27 +35,29 @@ public class NotificationDetailPage {
         titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         
         Label dateLbl = new Label("Received on: " + notification.getCreatedAt().get());
-        dateLbl.setStyle("-fx-text-fill: grey;");
+        dateLbl.setStyle("-fx-text-fill: grey; -fx-font-style: italic;");
         
         Text messageText = new Text(notification.getMessage().get());
-        messageText.setWrappingWidth(600);
+        messageText.setWrappingWidth(500);
         messageText.setTextAlignment(TextAlignment.CENTER);
         messageText.setFont(Font.font("Arial", 16));
         
         Button deleteBtn = new Button("Delete Notification");
         deleteBtn.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
+        deleteBtn.setMinWidth(150);
         
         Button backBtn = new Button("Back to List");
+        backBtn.setMinWidth(150);
         
-        VBox container = new VBox(20);
-        container.setAlignment(Pos.CENTER);
-        container.setPadding(new Insets(30));
-        container.setStyle("-fx-border-color: #ccc; -fx-border-width: 2px; -fx-border-radius: 10px; -fx-background-color: #f9f9f9;");
-        container.setMaxWidth(700);
+        VBox card = new VBox(20);
+        card.setAlignment(Pos.CENTER);
+        card.setPadding(new Insets(40));
+        card.setStyle("-fx-border-color: #ddd; -fx-border-radius: 10; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);");
+        card.setMaxWidth(600);
         
-        container.getChildren().addAll(titleLbl, dateLbl, messageText, deleteBtn, backBtn);
+        card.getChildren().addAll(titleLbl, dateLbl, messageText, deleteBtn, backBtn);
         
-        VBox root = new VBox(container);
+        VBox root = new VBox(card);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(20));
 
@@ -63,7 +65,7 @@ public class NotificationDetailPage {
             controller.deleteNotification(notification.getId().get());
             
             Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setContentText("Notification deleted.");
+            alert.setContentText("Notification deleted successfully.");
             alert.showAndWait();
             goBack();
         });

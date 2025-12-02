@@ -22,23 +22,25 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.Main;
+import model.Service;
 import model.Transaction;
 import model.User;
 
 public class ManagePendingTransaction {
-    Stage stage;
+	Stage stage;
     TransactionController trController = new TransactionController();
     UserController userController = new UserController();
     
     Label titleLbl;
     TableView<Transaction> table;
-    Button backBtn;
+    Button logoutBtn;
     VBox mainLayout;
     ObservableList<Transaction> pendingData;
 
@@ -47,36 +49,54 @@ public class ManagePendingTransaction {
     }
 
     public Scene init() {
-        titleLbl = new Label("Pending Transactions");
+        titleLbl = new Label("Pending Transactions Queue");
         titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+
+        logoutBtn = new Button("Logout");
+        logoutBtn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;"); 
+        logoutBtn.setMinWidth(100);
+        
+        logoutBtn.setOnAction(e -> Main.goToLogin(stage));
 
         table = new TableView<>();
         setupTableColumns();
         loadData(); 
+        
         VBox.setVgrow(table, Priority.ALWAYS);
 
-        backBtn = new Button("Back to Dashboard");
-        backBtn.setOnAction(e -> Main.goToManageService(stage));
-
-        HBox topBar = new HBox(10, titleLbl);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        
+        HBox topBar = new HBox(15, titleLbl, spacer, logoutBtn);
         topBar.setAlignment(Pos.CENTER_LEFT);
 
         mainLayout = new VBox(15);
-        mainLayout.setPadding(new Insets(20));
-        mainLayout.getChildren().addAll(topBar, table, backBtn);
+        mainLayout.setPadding(new Insets(25));
+        mainLayout.getChildren().addAll(topBar, new Label("Assign a laundry staff to process these orders."), table);
 
         return new Scene(mainLayout, 1000, 600);
     }
 
     private void setupTableColumns() {
-        TableColumn<Transaction, Integer> idCol = new TableColumn<>("ID");
-        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-
-        TableColumn<Transaction, Integer> custCol = new TableColumn<>("Cust ID");
-        custCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-
-        TableColumn<Transaction, Integer> serviceCol = new TableColumn<>("Service ID");
-        serviceCol.setCellValueFactory(new PropertyValueFactory<>("serviceId"));
+    	TableColumn<Transaction, String> custCol = new TableColumn<>("Customer Name");
+        custCol.setCellValueFactory(cellData -> {
+            int customerId = cellData.getValue().getCustomerId();
+            User user = User.getUserById(customerId);
+            return new SimpleStringProperty(user != null ? user.getUsername() : "Unknown ID: " + customerId);
+        });
+        
+        TableColumn<Transaction, String> serviceCol = new TableColumn<>("Service Name");
+        serviceCol.setCellValueFactory(cellData -> {
+            int serviceId = cellData.getValue().getServiceId();
+            String serviceName = "Unknown";
+            for (Service s : Service.getListService()) {
+                if (s.getId().get() == serviceId) {
+                    serviceName = s.getName().get();
+                    break;
+                }
+            }
+            return new SimpleStringProperty(serviceName);
+        });
 
         TableColumn<Transaction, String> dateCol = new TableColumn<>("Date");
         dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -112,7 +132,7 @@ public class ManagePendingTransaction {
             }
         });
 
-        table.getColumns().addAll(idCol, custCol, serviceCol, dateCol, statusCol, weightCol, assignCol);
+        table.getColumns().addAll(custCol, serviceCol, dateCol, statusCol, weightCol, assignCol);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 

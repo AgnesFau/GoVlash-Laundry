@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -66,17 +65,18 @@ public class NotificationPage {
     
     private void setupColumns() {
         TableColumn<Notification, String> dateCol = new TableColumn<>("Date");
-        dateCol.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
+        dateCol.setCellValueFactory(cellData -> cellData.getValue().createdAtProperty());
         dateCol.setPrefWidth(150);
         
         TableColumn<Notification, String> msgCol = new TableColumn<>("Message");
-        msgCol.setCellValueFactory(new PropertyValueFactory<>("message"));
+        msgCol.setCellValueFactory(cellData -> cellData.getValue().messageProperty());
         msgCol.setPrefWidth(400); 
         
         TableColumn<Notification, String> statusCol = new TableColumn<>("Status");
-        statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        statusCol.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
         
         table.getColumns().addAll(dateCol, msgCol, statusCol);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
     private void loadData() {
