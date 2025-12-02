@@ -48,6 +48,9 @@ public class Main extends Application {
     public static void goToLaundryStaffPage(Stage stage) {
     	stage.setScene(LaundryStaffPage.getScene(stage, currentUser.getId()));
     }
+    public static void goToManagePendingTransaction(Stage stage) {
+        stage.setScene(ManagePendingTransaction.getScene(stage));
+    }
 	public static void main(String[] args) {
 		try {
 			User.loadUsersFromDB();

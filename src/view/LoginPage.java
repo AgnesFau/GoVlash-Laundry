@@ -92,6 +92,9 @@ public class LoginPage {
 				else if(user.getRole().equals("Laundry Staff")) {
 					Main.goToLaundryStaffPage(stage);
 				}
+				else if(user.getRole().equals("Receptionist")) {
+                    Main.goToManagePendingTransaction(stage);
+                }
 			}
 		});
 		
