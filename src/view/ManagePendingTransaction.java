@@ -37,6 +37,7 @@ public class ManagePendingTransaction {
 	Stage stage;
     TransactionController trController = new TransactionController();
     UserController userController = new UserController();
+    User currentUser;
     
     Label titleLbl;
     TableView<Transaction> table;
@@ -44,8 +45,9 @@ public class ManagePendingTransaction {
     VBox mainLayout;
     ObservableList<Transaction> pendingData;
 
-    public ManagePendingTransaction(Stage stage) {
+    public ManagePendingTransaction(Stage stage, User currentUser) {
         this.stage = stage;
+        this.currentUser = currentUser;
     }
 
     public Scene init() {
@@ -145,6 +147,7 @@ public class ManagePendingTransaction {
 
         pendingData = FXCollections.observableArrayList(pendingOnly);
         table.setItems(pendingData);
+        table.refresh();
     }
 
     private void showAssignPopup(Transaction transaction) {
@@ -161,19 +164,19 @@ public class ManagePendingTransaction {
 
         TableColumn<User, Number> idColumn = new TableColumn<>("Id");
         idColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getId()));
-        
+
         TableColumn<User, String> usernameColumn = new TableColumn<>("Username");
         usernameColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getUsername()));
-        
+
         TableColumn<User, String> emailColumn = new TableColumn<>("Email");
         emailColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEmail()));
-        
+
         TableColumn<User, String> genderColumn = new TableColumn<>("Gender");
         genderColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getGender()));
-        
+
         TableColumn<User, String> dobColumn = new TableColumn<>("DOB");
         dobColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDob().toString()));
-        
+
         TableColumn<User, String> roleColumn = new TableColumn<>("Role");
         roleColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRole()));
 
@@ -187,12 +190,13 @@ public class ManagePendingTransaction {
         Button cancelBtn = new Button("Cancel");
 
         assignSelectedBtn.setOnAction(e -> {
-        	User selectedStaff = staffTable.getSelectionModel().getSelectedItem();
+            User selectedStaff = staffTable.getSelectionModel().getSelectedItem();
             if (selectedStaff != null) {
-                String error = trController.assignStaffToTransaction(transaction.getId(), selectedStaff.getId());
-                if (error.isEmpty()) {
+                String error = trController.assignStaffToTransaction(transaction.getId(), selectedStaff.getId(), currentUser.getId());
+                if (error == null) {
                     popup.close();
-                    loadData();
+                    pendingData.removeIf(t -> t.getId() == transaction.getId());
+                    table.refresh();
                 } else {
                     showAlert(error, AlertType.ERROR);
                 }
@@ -222,7 +226,7 @@ public class ManagePendingTransaction {
         alert.show();
     }
 
-    public static Scene getScene(Stage stage) {
-        return new ManagePendingTransaction(stage).init();
+    public static Scene getScene(Stage stage, User currentUser) {
+        return new ManagePendingTransaction(stage, currentUser).init();
     }
 }

@@ -129,19 +129,20 @@ public class Transaction {
         return trList;
     }
 	
-	public static String assignStaffToTransaction(int transactionId, int staffId) {
-	    String query = "UPDATE transactions SET laundry_staff_id = ?, status = 'On Progress' WHERE id = ?";
+	public static String assignStaffToTransaction(int transactionId, int staffId, int receptionistId) {
+	    String query = "UPDATE transactions SET laundry_staff_id = ?, status = 'On Progress', receptionist_id = ? WHERE id = ?";
 
 	    try {
 	        PreparedStatement ps = DbConnect.getInstance().prepareStatement(query);
 
 	        ps.setInt(1, staffId);
-	        ps.setInt(2, transactionId);
+	        ps.setInt(2, receptionistId);
+	        ps.setInt(3, transactionId);
 
 	        int rows = ps.executeUpdate();
 
 	        if (rows > 0) {
-	            return "Staff assigned successfully!";
+	            return null;
 	        } else {
 	            return "Failed to assign staff (no rows updated).";
 	        }

@@ -49,7 +49,7 @@ public class Main extends Application {
     	stage.setScene(LaundryStaffPage.getScene(stage, currentUser.getId()));
     }
     public static void goToManagePendingTransaction(Stage stage) {
-        stage.setScene(ManagePendingTransaction.getScene(stage));
+        stage.setScene(ManagePendingTransaction.getScene(stage, currentUser));
     }
 	public static void main(String[] args) {
 		try {
@@ -69,7 +69,7 @@ public class Main extends Application {
         manageServiceScene = ManageServicePage.getScene(stage);
         manageEmployeeScene = ManageEmployeePage.getScene(stage);
         viewTransactionScene = ViewTransactionPage.getScene(stage); 
-        managePendingTransaction = ManagePendingTransaction.getScene(stage);
+//        managePendingTransaction = ManagePendingTransaction.getScene(stage, currentUser);
         
 		stage.setScene(loginScene);
 		stage.show();
