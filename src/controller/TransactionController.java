@@ -39,8 +39,8 @@ public class TransactionController {
         return Transaction.getAllTransactions();
     }
 	
-	public String assignStaffToTransaction(int transactionId, int staffId) {
-        return Transaction.assignStaffToTransaction(transactionId, staffId);
+	public String assignStaffToTransaction(int transactionId, int staffId, int receptionistId) {
+        return Transaction.assignStaffToTransaction(transactionId, staffId, receptionistId);
     }
 	
 	public ArrayList<Transaction> getAssignedOrdersByLaundryStaffID(int laundryStaffID){

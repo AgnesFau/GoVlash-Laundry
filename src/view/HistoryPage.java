@@ -63,6 +63,6 @@ public class HistoryPage {
         ArrayList<Transaction> data = trController.getCustomerHistory(currentUser.getId());
         ObservableList<Transaction> observableData = FXCollections.observableArrayList(data);
         table.setItems(observableData);
-        System.out.println("Jumlah data yang diambil: " + data.size());
+//        System.out.println("Jumlah data yang diambil: " + data.size());
     }
 }

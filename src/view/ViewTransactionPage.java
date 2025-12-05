@@ -93,6 +93,20 @@ public class ViewTransactionPage {
             return new SimpleStringProperty(user != null ? user.getUsername() : "Unknown ID: " + customerId);
         });
         
+        TableColumn<Transaction, String> receptionistCol = new TableColumn<>("Receptionist Name");
+        receptionistCol.setCellValueFactory(cellData -> {
+        	int receptionistId = cellData.getValue().getReceptionistId();
+        	User user = User.getUserById(receptionistId);
+        	return new SimpleStringProperty(user != null ? user.getUsername() : "Unknown ID: " + receptionistId);
+        });
+        
+        TableColumn<Transaction, String> staffCol = new TableColumn<>("Staff Name");
+        staffCol.setCellValueFactory(cellData -> {
+        	int staffId = cellData.getValue().getLaundryStaffId();
+        	User user = User.getUserById(staffId);
+        	return new SimpleStringProperty(user != null ? user.getUsername() : "Unknown ID: " + staffId);
+        });
+        
         TableColumn<Transaction, String> serviceCol = new TableColumn<>("Service Name");
         serviceCol.setCellValueFactory(cellData -> {
             int serviceId = cellData.getValue().getServiceId();
@@ -115,7 +129,7 @@ public class ViewTransactionPage {
         TableColumn<Transaction, Double> weightCol = new TableColumn<>("Weight (Kg)");
         weightCol.setCellValueFactory(new PropertyValueFactory<>("totalWeight"));
 
-        table.getColumns().addAll(custCol, serviceCol, dateCol, statusCol, weightCol);
+        table.getColumns().addAll(custCol, receptionistCol, staffCol, serviceCol, dateCol, statusCol, weightCol);
         
         setupSendNotifColumn();
         
