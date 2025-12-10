@@ -54,10 +54,12 @@ public class ManageEmployeePage {
     
     UserController controller = new UserController();
     
+    // constructor
     public ManageEmployeePage(Stage stage) {
         this.stage = stage;
     }
 
+    // inisiasi tampilan
     private Scene init() {
         titleLbl = new Label("Manage Employees");
         titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -124,6 +126,7 @@ public class ManageEmployeePage {
         return scene;
     }
     
+    // action untuk menambahkan employee
     private void addBehaviour() {
         addBtn.setOnAction(e -> {
             RadioButton selectedGender = (RadioButton) genderTg.getSelectedToggle();
@@ -161,6 +164,7 @@ public class ManageEmployeePage {
         });
     }
     
+    // untuk menampilkan data employee
     private void initTable() {
         employeeTable = new TableView<>();
         
@@ -188,10 +192,12 @@ public class ManageEmployeePage {
         employeeTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
     }
     
+    // scene manage employee
     public static Scene getScene(Stage stage) {
         return new ManageEmployeePage(stage).init();
     }
 
+    // alert card
     private void showAlert(String message, AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle("Information");

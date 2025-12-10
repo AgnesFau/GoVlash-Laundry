@@ -23,6 +23,7 @@ public class NotificationDetailPage {
     Notification notification;
     NotificationController controller = new NotificationController();
     
+    // constructor
     public NotificationDetailPage(Stage stage, User currentUser, Notification notification) {
         this.stage = stage;
         this.currentUser = currentUser;
@@ -30,6 +31,7 @@ public class NotificationDetailPage {
         controller.markAsRead(notification.getId().get());
     }
 
+    // inisiasi tampilan
     public Scene init() {
         Label titleLbl = new Label("Notification Detail");
         titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -75,6 +77,7 @@ public class NotificationDetailPage {
         return new Scene(root, 800, 600);
     }
     
+    // kembali ke halaman sebelumnya
     private void goBack() {
         NotificationPage listPage = new NotificationPage(stage, currentUser);
         stage.setScene(listPage.init());

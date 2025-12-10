@@ -30,6 +30,7 @@ public class LoginPage {
 	VBox mainLayout; 
 	GridPane formLayout;
 	
+	// inisiasi tampilan
 	private Scene init() {
 		titleLbl = new Label("GoVlash Login");
 		titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -72,6 +73,7 @@ public class LoginPage {
 		return scene;
 	}
 	
+	// menentukan redirect ke halaman mana berdasarkan akun yang login
 	private void addBehaviour() {
 		submitBtn.setOnAction(e -> {
 			User user = userController.login(emailTxt.getText(), passwordTxt.getText());
@@ -103,6 +105,7 @@ public class LoginPage {
 		});
 	}
 	
+	// alert card
 	private void showAlert(String message) {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.setTitle("Error");
@@ -110,10 +113,12 @@ public class LoginPage {
 		alert.show();
 	}
 	
+	// scene untuk login page
 	public static Scene getScene(Stage stage) {
 		return new LoginPage(stage).init();
 	}
 
+	// constructor
 	public LoginPage(Stage stage) {
 		this.stage = stage;
 		userController = new UserController();

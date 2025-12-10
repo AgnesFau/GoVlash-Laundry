@@ -37,6 +37,7 @@ public class RegisterPage {
 	
 	UserController userController = new UserController();
 	
+	// inisiasi tampilan
 	private Scene init() {
 		titleLbl = new Label("Register New Account");
 		titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -109,6 +110,7 @@ public class RegisterPage {
 		return scene;
 	}
 	
+	// action untuk menambahkan akun customer
 	private void addBehaviour() {
 		submitBtn.setOnAction(e -> {
 			RadioButton selectedGender = (RadioButton) genderTg.getSelectedToggle();
@@ -149,10 +151,12 @@ public class RegisterPage {
 		});
 	}
 	
+	// scene untuk register page
 	public static Scene getScene(Stage stage) {
 		return new RegisterPage(stage).init();
 	}
 
+	// alert card
 	private void showAlert(String message) {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.setTitle("Error");
@@ -160,6 +164,7 @@ public class RegisterPage {
 		alert.show();
 	}
 	
+	// constructor
 	public RegisterPage(Stage stage) {
 		this.stage = stage;
 	}

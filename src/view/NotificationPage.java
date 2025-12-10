@@ -26,11 +26,13 @@ public class NotificationPage {
     TableView<Notification> table;
     Button backBtn;
     
+    // constructor
     public NotificationPage(Stage stage, User currentUser) {
         this.stage = stage;
         this.currentUser = currentUser;
     }
 
+    // inisiasi
     public Scene init() {
         Label titleLbl = new Label("My Notifications");
         titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -63,6 +65,7 @@ public class NotificationPage {
         return new Scene(layout, 800, 600);
     }
     
+    // kolom table untuk menampilkan data
     private void setupColumns() {
         TableColumn<Notification, String> dateCol = new TableColumn<>("Date");
         dateCol.setCellValueFactory(cellData -> cellData.getValue().createdAtProperty());
@@ -79,6 +82,7 @@ public class NotificationPage {
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
+    // ambil data dari database
     private void loadData() {
         ObservableList<Notification> data = FXCollections.observableArrayList(
             notifController.getAllNotifications(currentUser.getId())

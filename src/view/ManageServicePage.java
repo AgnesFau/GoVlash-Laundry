@@ -37,10 +37,12 @@ public class ManageServicePage {
     VBox mainLayout;
     GridPane formLayout;
     
+    // constructor
     public ManageServicePage(Stage stage) {
         this.stage = stage;
     }
 
+    // inisiasi tampilan
     private Scene init() {
         titleLbl = new Label("Manage Services");
         titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -105,6 +107,7 @@ public class ManageServicePage {
         return scene;
     }
     
+    // table column untuk menampilkan data
     private void setupActionColumn() {
         TableColumn<Service, Void> actionColumn = new TableColumn<>("Action");
 
@@ -155,6 +158,7 @@ public class ManageServicePage {
         serviceTable.getColumns().add(actionColumn);
     }
     
+    // action untuk update service
     private void onUpdate(Service service) {
         nameTxt.setText(service.getName().get());
         descTxt.setText(service.getDescription().get());
@@ -185,6 +189,7 @@ public class ManageServicePage {
         });
     }
     
+    // membersihkan isi form
     private void clearForm() {
         nameTxt.clear();
         descTxt.clear();
@@ -192,6 +197,7 @@ public class ManageServicePage {
         durationTxt.clear();
     }
     
+    // action untuk menambahkan service baru
     private void addBehaviour() {
         priceTxt.textProperty().addListener((obs, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d*)?")) priceTxt.setText(oldValue);
@@ -220,10 +226,12 @@ public class ManageServicePage {
         logoutBtn.setOnAction(e -> Main.goToLogin(stage));
     }
     
+    // scene untuk page manage service
     public static Scene getScene(Stage stage) {
         return new ManageServicePage(stage).init();
     }
 
+    // alert card
     private void showAlert(String message, AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle("Information");

@@ -29,11 +29,13 @@ public class OrderPage {
     TextArea notesTxt;
     Button submitBtn, backBtn;
     
+    // constructor
     public OrderPage(Stage stage, User currentUser) {
         this.stage = stage;
         this.currentUser = currentUser;
     }
 
+    // inisiasi tampilan
     public Scene init() {
         Label titleLbl = new Label("Place New Order");
         titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -81,6 +83,7 @@ public class OrderPage {
         return new Scene(container, 800, 600);
     }
 
+    // action untuk order service
     private void addActions() {
         submitBtn.setOnAction(e -> {
             Service selectedService = serviceCb.getValue();
@@ -118,6 +121,7 @@ public class OrderPage {
         });
     }
 
+    // menampilkan alert
     private void showAlert(String msg) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Input Error");

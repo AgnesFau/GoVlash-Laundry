@@ -45,11 +45,13 @@ public class ManagePendingTransaction {
     VBox mainLayout;
     ObservableList<Transaction> pendingData;
 
+    // constructor
     public ManagePendingTransaction(Stage stage, User currentUser) {
         this.stage = stage;
         this.currentUser = currentUser;
     }
 
+    // inisiasi tampilan
     public Scene init() {
         titleLbl = new Label("Pending Transactions Queue");
         titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -79,6 +81,7 @@ public class ManagePendingTransaction {
         return new Scene(mainLayout, 1000, 600);
     }
 
+    // table column untuk menampilkan data transaction
     private void setupTableColumns() {
     	TableColumn<Transaction, String> custCol = new TableColumn<>("Customer Name");
         custCol.setCellValueFactory(cellData -> {
@@ -138,6 +141,7 @@ public class ManagePendingTransaction {
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
+    // load data transaction
     private void loadData() {
         ArrayList<Transaction> rawData = trController.getAllTransactions();
 
@@ -150,6 +154,7 @@ public class ManagePendingTransaction {
         table.refresh();
     }
 
+    // pop up yg berisi staff untuk di assign ke transaction yg di
     private void showAssignPopup(Transaction transaction) {
         Stage popup = new Stage();
         popup.initOwner(stage);
@@ -219,6 +224,7 @@ public class ManagePendingTransaction {
         popup.showAndWait();
     }
     
+    // alert card
     private void showAlert(String message, AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle("Information");
@@ -226,6 +232,7 @@ public class ManagePendingTransaction {
         alert.show();
     }
 
+    // scene untuk manage pending transaction
     public static Scene getScene(Stage stage, User currentUser) {
         return new ManagePendingTransaction(stage, currentUser).init();
     }

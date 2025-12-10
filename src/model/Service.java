@@ -21,8 +21,9 @@ public class Service {
 	private DoubleProperty price;
 	private IntegerProperty duration;
 	
-	private static ObservableList<Service> listService = FXCollections.observableArrayList();
+	private static ObservableList<Service> listService = FXCollections.observableArrayList(); // untuk menampung data services
 
+	// constructor
 	public Service(IntegerProperty id, StringProperty name, StringProperty description, DoubleProperty price, IntegerProperty duration) {
 		super();
 		this.id = id;
@@ -33,6 +34,7 @@ public class Service {
 		listService.add(this);
 	}
 	
+	// menambahkan service ke database
 	public static Service addService(String name, String description, Double price, Integer duration) throws SQLException {
 	    String sql = "INSERT INTO services (name, description, price, duration) VALUES (?, ?, ?, ?)";
 
@@ -54,6 +56,7 @@ public class Service {
 	    return s; 
 	}
 
+	// edit service, untuk admin
 	public static void updateService(int id, String name, String desc, Double price, Integer duration) throws SQLException {
 	    String sql = "UPDATE services SET name=?, description=?, price=?, duration=? WHERE id=?";
 	    
@@ -66,6 +69,7 @@ public class Service {
 	    stmt.executeUpdate();
 	}
 	
+	// hapus service dari database
 	public static void deleteService(int id) throws SQLException {
 	    String sql = "DELETE FROM services WHERE id=?";
 	    
@@ -74,6 +78,7 @@ public class Service {
 	    stmt.executeUpdate();
 	}
 	
+	// ambil semua data service dari database
 	public static void loadServicesFromDB() throws SQLException {
 	    String sql = "SELECT * FROM services";
 	    PreparedStatement stmt = DbConnect.getInstance().prepareStatement(sql);
@@ -92,6 +97,7 @@ public class Service {
 	    }
 	}
 
+	// getter setter
 	public IntegerProperty getId() {
 		return id;
 	}

@@ -21,7 +21,7 @@ public class Transaction {
 	private String notes;
 	private boolean isNotified = false;
 	
-	private ArrayList<Transaction> listTransactions = new ArrayList<Transaction>();
+	private ArrayList<Transaction> listTransactions = new ArrayList<Transaction>(); // untuk menampung data transactions
 
 	public Transaction(int id, int serviceId, int customerId, int receptionistId, int laundryStaffId, LocalDate date,
             String status, Double totalWeight, String notes) {
@@ -36,6 +36,7 @@ public class Transaction {
         this.notes = notes;
     }
 	
+	// mengambil transaction berdasarkan status
 	public ArrayList<Transaction> getTransactionByStatus(String status){
 		ArrayList<Transaction> listByStatus = new ArrayList<Transaction>();
 		
@@ -48,6 +49,7 @@ public class Transaction {
 		return listByStatus;
 	}
 	
+	// ambil semua data transactions
 	public static ArrayList<Transaction> getAllTransactions() {
         ArrayList<Transaction> trList = new ArrayList<>();
         String query = "SELECT * FROM transactions"; 
@@ -82,6 +84,7 @@ public class Transaction {
         return trList;
     }
 	
+	// menambahkan transaction baru ke database
 	public static void createTransaction(int serviceId, int customerId, double weight, String notes) throws SQLException {
 		
 		String q = "INSERT INTO transactions (service_id, customer_id, date, status, total_weight, notes) VALUES (?, ?, ?, ?, ?, ?)";
@@ -95,6 +98,8 @@ public class Transaction {
         
         ps.executeUpdate();
 	}
+	
+	// ambil data transaction berdasarkan customer id
 	public static ArrayList<Transaction> getTransactionByCustomerId(int customerId) {
         ArrayList<Transaction> trList = new ArrayList<Transaction>();
         String query = "SELECT * FROM transactions WHERE customer_id = ? ORDER BY date DESC";
@@ -129,6 +134,7 @@ public class Transaction {
         return trList;
     }
 	
+	// untuk assign transaction ke laundry staff
 	public static String assignStaffToTransaction(int transactionId, int staffId, int receptionistId) {
 	    String query = "UPDATE transactions SET laundry_staff_id = ?, status = 'On Progress', receptionist_id = ? WHERE id = ?";
 
@@ -153,6 +159,7 @@ public class Transaction {
 	    }
 	}
 
+	// untuk menampilkan transaction yang di assign ke laundry staff tertentu
 	public static ArrayList<Transaction> getAssignedOrdersByLaundryStaffID(int laundryStaffID) {
 	    ArrayList<Transaction> trList = new ArrayList<>();
 	    String query = "SELECT * FROM transactions WHERE laundry_staff_id = ? ORDER BY date DESC";
@@ -187,6 +194,7 @@ public class Transaction {
 	    return trList;
 	}
 
+	// update status transacion
 	public static void updateTransactionStatus(int transactionId, String status) {
 	    String query = "UPDATE transactions SET status = ? WHERE id = ?";
 
@@ -203,6 +211,7 @@ public class Transaction {
 	    }
 	}
 	
+	// untuk mengirim/menghapus notifikasi untuk transactions tertentu
 	public static void updateNotified(int transactionId, int isNotified) {
 		String query = "UPDATE transactions SET is_notified = ? WHERE id = ?";
 		
@@ -216,6 +225,7 @@ public class Transaction {
 		}
 	}
 	
+	// getter setter
 	public int getId() {
 		return id;
 	}

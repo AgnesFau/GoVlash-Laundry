@@ -13,6 +13,8 @@ import model.Receptionist;
 import model.User;
 
 public class UserController {
+	
+	// validasi untuk menambahkan user ke database
 	public String addUser(String name, String email, String password, String confirmPassword, String gender, LocalDate dob, String role) {
 		User user = null;
 	    int id = User.getUserList().size() + 1;
@@ -28,6 +30,7 @@ public class UserController {
 	    return null;  	
 	}
 	
+	// validasi field ketika login
 	public User login(String email, String password) {
 		if(email.isEmpty() || password.isEmpty()) {
 			return null;
@@ -36,6 +39,7 @@ public class UserController {
 		return User.login(email, password);
 	}
 	
+	// menambahkan employee ke database
 	public void addEmployee(String name, String email, String password, String confirmPassword, String gender, LocalDate dob, String role) {
 		User user = null;
 	    int id = User.getUserList().size() + 1;
@@ -60,6 +64,7 @@ public class UserController {
 	    }
 	}
 	
+	// validasi untuk menambahkan employee
 	public String validateAddEmployee(String name, String email, String password, String confirmPassword, String gender, LocalDate dob, String role) {
 		if(name.isEmpty() || email.isEmpty() || password.isEmpty() || gender == null || dob == null){
 			return "All fields must be filled!";
@@ -90,6 +95,7 @@ public class UserController {
 	    return null;
 	}
 
+	// validasi untuk registrasi
 	public String validateAddCustomer(String name, String email, String password, String confirmPassword, String gender, LocalDate dob) {
 		if(name.isEmpty() || email.isEmpty() || password.isEmpty() || gender == null || dob == null){
 			return "All fields must be filled!";
@@ -115,7 +121,7 @@ public class UserController {
 	    return null;
 	}
 	
-	
+	// ambil data user berdasarkan role mereka
 	public ArrayList<User> getUserByRole(String role){
 		if(!role.equals("Customer") && !role.equals("Laundry Staff") && !role.equals("Admin") && !role.equals("Receptionist")) {
 			return null;
@@ -124,14 +130,17 @@ public class UserController {
 		return User.getUserByRole(role);
 	}
 	
+	// ambil data user berdasarkan email
 	private User getUserByEmail(String Email) {
 		return User.getUserByEmail(Email);
 	}
 	
+	// ambil data user berdasarkan nama
 	private User getUserByName(String name) {
 		return User.getUserByName(name);
 	}
 	
+	// ambil seluruh data pegawai
 	public ObservableList<User> getAllEmployees(){
 		return Employee.getListEmployee();
 	}
