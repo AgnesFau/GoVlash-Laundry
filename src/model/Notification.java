@@ -23,6 +23,7 @@ public class Notification {
     private StringProperty createdAt;
     private StringProperty status;
 
+    // constructor
     public Notification(int id, int recipientId, String message, LocalDateTime createdAt, boolean isRead) {
         this.id = new SimpleIntegerProperty(id);
         this.recipientId = new SimpleIntegerProperty(recipientId);
@@ -34,6 +35,7 @@ public class Notification {
         this.status = new SimpleStringProperty(isRead ? "Read" : "Unread");
     }
     
+    // menambahkan notification ke database
     public static void addNotification(int recipientId) throws SQLException {
     	String sql = "INSERT INTO notifications (recipient_id, message, created_at, is_read)"
     			+ " VALUES (?, ?, ?, ?)";
@@ -47,6 +49,7 @@ public class Notification {
     	ps.executeUpdate();
     }
     
+    // ambil data notifications berdasarkan user id tertentu
     public static ArrayList<Notification> getUserNotifications(int userId) {
         ArrayList<Notification> list = new ArrayList<>();
         String query = "SELECT * FROM notifications WHERE recipient_id = ? ORDER BY created_at DESC";
@@ -71,6 +74,7 @@ public class Notification {
         return list;
     }
     
+    // menandakan jika notification itu sudah dibuka
     public static void markAsRead(int notifId) {
         String query = "UPDATE notifications SET is_read = 1 WHERE id = ?";
         try {
@@ -82,6 +86,7 @@ public class Notification {
         }
     }
 
+    // hapus notification dari database
     public static void delete(int notifId) {
         String query = "DELETE FROM notifications WHERE id = ?";
         try {
@@ -93,6 +98,7 @@ public class Notification {
         }
     }
     
+    // getter setter
     public IntegerProperty getId() { 
     	return id; 
     }
