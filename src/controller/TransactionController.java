@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import model.Transaction;
 
 public class TransactionController {
+	
+	// ambil semua data transaction berdasarkan customer id
 	public ArrayList<Transaction> getCustomerHistory(int customerId) {
 	    return Transaction.getTransactionByCustomerId(customerId);
 	}
 	
+	// validasi untuk menambahkan transaction ke database
 	public String createTransaction(int serviceId, int customerId, String weightStr, String notes) {
 	        
         if (weightStr.isEmpty() || notes.isEmpty()) {
@@ -35,22 +38,27 @@ public class TransactionController {
         }
     }
 	
+	// ambil semua data transaction
 	public ArrayList<Transaction> getAllTransactions() {
         return Transaction.getAllTransactions();
     }
 	
+	// assign task (transaction) ke laundry staff, untuk receptionist
 	public String assignStaffToTransaction(int transactionId, int staffId, int receptionistId) {
         return Transaction.assignStaffToTransaction(transactionId, staffId, receptionistId);
     }
 	
+	// ambil data transaction yang ditugaskan ke laundry staff
 	public ArrayList<Transaction> getAssignedOrdersByLaundryStaffID(int laundryStaffID){
 		return Transaction.getAssignedOrdersByLaundryStaffID(laundryStaffID);
 	}
 	
+	// update transaction status (pending, on progress, finished)
 	public void updateTransactionStatus(int transactionID, String status) {
 		Transaction.updateTransactionStatus(transactionID, status);
 	}
 	
+	// update sudah dinotif atau belum (1 = udh di notif, 0 = blm)
 	public void updateNotified(int transactionId, int isNotified) {
 		Transaction.updateNotified(transactionId, isNotified);
 	}
