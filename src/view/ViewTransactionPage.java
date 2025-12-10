@@ -45,10 +45,12 @@ public class ViewTransactionPage {
     ObservableList<Transaction> masterData;
     FilteredList<Transaction> filteredData;
 
+    // constructor
     public ViewTransactionPage(Stage stage) {
         this.stage = stage;
     }
 
+    // inisiasi tampilan
     public Scene init() {
         titleLbl = new Label("All Transactions Monitoring");
         titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -84,6 +86,7 @@ public class ViewTransactionPage {
         return new Scene(mainLayout, 1000, 600);
     }
 
+    // table column untuk menampilkan data
     private void setupTableColumns() {
         
         TableColumn<Transaction, String> custCol = new TableColumn<>("Customer Name");
@@ -136,6 +139,7 @@ public class ViewTransactionPage {
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
+    // atur tampilan button di kolom notifikasi
     private void setupSendNotifColumn() {
         TableColumn<Transaction, Void> notifCol = new TableColumn<>("Customer Notification");
         
@@ -184,6 +188,7 @@ public class ViewTransactionPage {
         table.getColumns().add(notifCol);
     }
     
+    // action untuk kirim notif ke customer
     private void handleSendNotification(Transaction tr) {
         int recipientId = tr.getCustomerId();
         int transactionId = tr.getId();
@@ -208,6 +213,7 @@ public class ViewTransactionPage {
         showAlert("Notification sent to Customer!", AlertType.INFORMATION);
     }
     
+    // ambil semua data dari database
     private void loadData() {
         ArrayList<Transaction> rawData = trController.getAllTransactions();
         masterData = FXCollections.observableArrayList(rawData);
@@ -215,6 +221,7 @@ public class ViewTransactionPage {
         table.setItems(filteredData);
     }
     
+    // filter untuk tampilkan semua transaction atau yg udh kelar doang
     private void addFilterBehaviour() {
         filterBtn.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
             filteredData.setPredicate(transaction -> {
@@ -234,6 +241,7 @@ public class ViewTransactionPage {
         });
     }
     
+    // alert card
     private void showAlert(String message, AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle("Information");
@@ -241,6 +249,7 @@ public class ViewTransactionPage {
         alert.show();
     }
     
+    // scene untuk view transaction page
     public static Scene getScene(Stage stage) {
         return new ViewTransactionPage(stage).init();
     }
