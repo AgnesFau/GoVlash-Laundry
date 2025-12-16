@@ -4,7 +4,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import model.Service;
 
-public class ServiceTableComponent {
+public class ServiceTableComponent { // table untuk service, dipake di ManageServicePage
 	public static TableView<Service> create() {
 
         TableView<Service> table = new TableView<>();

@@ -16,7 +16,8 @@ public abstract class User {
 	private String gender;
 	private LocalDate dob;
 	private String role;
-	private static ArrayList<User> userList = new ArrayList<User>();
+	
+	private static ArrayList<User> userList = new ArrayList<User>(); // untuk menampung data user
 	
 	public User(int id, String username, String email, String password, String gender, LocalDate dob, String role) {
 		super();
@@ -30,6 +31,7 @@ public abstract class User {
 		userList.add(this);
 	}
 	
+	// untuk login
 	public static User login(String email, String password) {
 		for (User user : userList) {
 			if(user.email.equals(email) && user.password.equals(password)) {
@@ -40,6 +42,7 @@ public abstract class User {
 		return null;
 	}
 	
+	// get user berdasarkan role mereka
 	public static ArrayList<User> getUserByRole(String role){
 		ArrayList<User> userByRole = new ArrayList<User>();
 		for (User user : userList) {
@@ -51,6 +54,7 @@ public abstract class User {
 		return userByRole;
 	}
 	
+	// get user berdasarkan email mereka
 	public static User getUserByEmail(String email){
 		for (User user : userList) {
 			if(user.email.equals(email)) {
@@ -61,6 +65,7 @@ public abstract class User {
 		return null;
 	}
 	
+	// get user berdasarkan username
 	public static User getUserByName(String name) {
 		for (User user : userList) {
 			if(user.username.equals(name)) {
@@ -71,6 +76,7 @@ public abstract class User {
 		return null;
 	}
 	
+	// get user berdasarkan id
 	public static User getUserById(int id) {
 		for (User user : userList) {
 			if(user.id == id) {
@@ -81,6 +87,7 @@ public abstract class User {
 		return null;
 	}
 
+	// menambahkan user ke database ketika registrasi
 	public static void addUser(User user) throws SQLException {
 	    String sql = "INSERT INTO users (username, email, password, gender, dob, role) VALUES (?, ?, ?, ?, ?, ?)";
 	    
@@ -95,6 +102,7 @@ public abstract class User {
 	    stmt.executeUpdate();
 	}
 	
+	// mengambil seluruh data user dari database
 	public static void loadUsersFromDB() throws SQLException {
 	    String sql = "SELECT * FROM users";
 	    PreparedStatement stmt = DbConnect.getInstance().prepareStatement(sql);
@@ -126,6 +134,7 @@ public abstract class User {
 	    }
 	}
 	
+	// setter getter
 	public int getId() {
 		return id;
 	}

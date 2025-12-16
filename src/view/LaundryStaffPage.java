@@ -44,11 +44,13 @@ public class LaundryStaffPage {
     VBox mainLayout;
     ObservableList<Transaction> assignedData;
     
+    // constructor
     public LaundryStaffPage(Stage stage, int staffId) {
         this.stage = stage;
         this.staffId = staffId;
     }
 
+    // inisiasi tampilan
     public Scene init() {
         titleLbl = new Label("My Assigned Tasks");
         titleLbl.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -77,6 +79,7 @@ public class LaundryStaffPage {
         return new Scene(mainLayout, 1000, 600);
     }
 
+    // table column untuk menampilkan data
     private void setupTableColumns() {
     	TableColumn<Transaction, String> custCol = new TableColumn<>("Customer Name");
         custCol.setCellValueFactory(cellData -> {
@@ -148,12 +151,14 @@ public class LaundryStaffPage {
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
+    // ambil data dari database
     private void loadData() {
         ArrayList<Transaction> rawData = trController.getAssignedOrdersByLaundryStaffID(staffId);
         assignedData = FXCollections.observableArrayList(rawData);
         table.setItems(assignedData);
     }
 
+    // update status transaction jadi finish
     private void handleMarkAsFinished(Transaction transaction) {
         trController.updateTransactionStatus(transaction.getId(), "Finished");
 
@@ -161,6 +166,7 @@ public class LaundryStaffPage {
         loadData();
     }
 
+    // alert card
     private void showAlert(String message, AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle("Information");
@@ -168,6 +174,7 @@ public class LaundryStaffPage {
         alert.show();
     }
 
+    // scene untuk staff laundry
     public static Scene getScene(Stage stage, int staffId) {
         return new LaundryStaffPage(stage, staffId).init();
     }

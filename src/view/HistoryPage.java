@@ -26,11 +26,14 @@ public class HistoryPage {
     Label titleLbl;
     TableView<Transaction> table;
     Button backBtn;
+    
+    // constructor
     public HistoryPage(Stage stage, User currentUser) {
         this.stage = stage;
         this.currentUser = currentUser;
     }
 
+    // inisiasi
     public Scene init() {
         titleLbl = new Label("Transaction History for " + currentUser.getUsername());
         titleLbl.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
@@ -59,6 +62,7 @@ public class HistoryPage {
         return scene;
     }
 
+    // load ulang data
     private void refreshTable() {
         ArrayList<Transaction> data = trController.getCustomerHistory(currentUser.getId());
         ObservableList<Transaction> observableData = FXCollections.observableArrayList(data);

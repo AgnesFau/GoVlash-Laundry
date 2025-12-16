@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import model.Service;
 
 public class ServiceController {
+	
+	// validasi untuk menambahkan service ke database
 	public String addService(String name, String description, Double price, Integer duration) {
 	    if (name.isEmpty() || description.isEmpty()) {
 	        return "All fields must be filled!";
@@ -31,6 +33,7 @@ public class ServiceController {
 	    }
 	}
 	
+	// edit service, untuk admin
 	public String updateService(int id, String name, String description, double price, int duration, Service service) {
 	    try {
 	        Service.updateService(id, name, description, price, duration);
@@ -45,6 +48,7 @@ public class ServiceController {
 	    }
 	}
 
+	// delete service
 	public String deleteService(Service service) {
         try {
             Service.deleteService(service.getId().get());

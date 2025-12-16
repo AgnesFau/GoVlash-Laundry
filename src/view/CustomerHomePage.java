@@ -21,6 +21,7 @@ public class CustomerHomePage {
         this.currentUser = currentUser;
     }
 
+    // inisiasi tampilan
     public Scene init() {
         welcomeLbl = new Label("Welcome, " + currentUser.getUsername());
         welcomeLbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
@@ -41,6 +42,7 @@ public class CustomerHomePage {
         return scene;
     }
 
+    // redirect ke halaman yang dituju
     private void addActions() {
     	orderBtn.setOnAction(e -> {
             OrderPage orderPage = new OrderPage(stage, currentUser);
